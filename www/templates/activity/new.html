@@ -1,0 +1,42 @@
+<ion-view view-title="添加活动">
+
+  <ion-content>
+    <div class="list">
+      <label class="item item-input">
+        <span class="input-label">活动日期</span>
+        <input type="date" ng-model="activity.date">
+      </label>
+
+      <label class="item item-input">
+        <span class="input-label">活动时间</span>
+        <input type="time" ng-model="activity.date">
+      </label>
+
+
+      <label class="item item-input">
+        <span class="input-label">测试用</span>
+        <!--
+        <input type="datetime" date-time ng-model="activity.date">
+        -->
+
+        <input type="text" 
+            ng-model="activity.date" 
+            name="datepicker"
+            value="activity.date | date"
+            ng-click="opendateModal()" 
+            >
+
+      </label>
+
+      <label class="item item-input item-select">
+        <div class="input-label">活动类别</div>
+        <select ng-model="activity.catagory">
+          <option selected>羽毛球</option>
+          <option>聚餐</option>
+        </select>
+      </label>
+    </div>
+
+    <button class="button button-balanced button-full button-positive" ng-click="save(activity)">保存</button>
+  </ion-content>
+</ion-view>

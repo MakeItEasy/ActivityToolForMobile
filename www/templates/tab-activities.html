@@ -1,0 +1,17 @@
+<ion-view view-title="活动一览">
+  <ion-nav-buttons side="right">
+    <a class="button button-clear icon-left ion-ios-plus-empty" href="#/tab/activity/new"></a>
+  </ion-nav-buttons>
+  <ion-content>
+    <ion-list>
+      <ion-item class="item-remove-animate item-icon-right" ng-repeat="activity in activities" type="item-text-wrap" href="#/tab/activity/{{activity.id}}}">
+        <h2>{{activity.name}}</h2>
+        <p>{{ activity.date | date }}</p>
+        <i class="icon ion-chevron-right icon-accessory"></i>
+
+        <ion-option-button class="button-balanced" ng-click="">账户充值</ion-option-button>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+
+</ion-view>

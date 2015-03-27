@@ -1,0 +1,21 @@
+<ion-view view-title="一览">
+  <ion-nav-buttons side="right">
+    <a class="button button-clear icon-left ion-ios-plus-empty" href="#/tab/person/new"></a>
+  </ion-nav-buttons>
+  <ion-content>
+    <ion-list>
+      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="person in persons" type="item-text-wrap" href="#/tab/person/{{person.id}}}">
+        <h2>{{person.name}}</h2>
+        <p>{{person.account  | currency: '¥' }}</p>
+        <i class="icon ion-chevron-right icon-accessory"></i>
+
+        <ion-option-button class="button-balanced" ng-click="charge(person)">账户充值</ion-option-button>
+        <!-- 因为删除时比较慎重的操作，所以不在这里显示
+        <ion-option-button class="button-assertive" ng-click="remove(person)">
+          Delete
+        </ion-option-button>
+        -->
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>
