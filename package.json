@@ -16,6 +16,6 @@
   },
   "cordovaPlugins": [
     "org.apache.cordova.media-capture",
-    "org.plugin.datepicker"
+    "com.plugin.datepicker"
   ]
 }

@@ -2,6 +2,7 @@
 
   <ion-content>
     <div class="list">
+      
       <label class="item item-input">
         <span class="input-label">活动日期</span>
         <input type="date" ng-model="activity.date">
@@ -11,22 +12,14 @@
         <span class="input-label">活动时间</span>
         <input type="time" ng-model="activity.date">
       </label>
-
-
+    
+<!-- 暂时不使用datePicker插件
       <label class="item item-input">
-        <span class="input-label">测试用</span>
-        <!--
-        <input type="datetime" date-time ng-model="activity.date">
-        -->
-
-        <input type="text" 
-            ng-model="activity.date" 
-            name="datepicker"
-            value="activity.date | date"
-            ng-click="opendateModal()" 
-            >
-
+        <span class="input-label">日期时间</span>
+        <span>{{ activity.date | date }}</span>
+        <button class="button button-small icon-left ion-star button-positive" ng-click="showDatePicker()"></button>
       </label>
+-->
 
       <label class="item item-input item-select">
         <div class="input-label">活动类别</div>

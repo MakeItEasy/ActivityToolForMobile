@@ -4,12 +4,13 @@
   </ion-nav-buttons>
   <ion-content>
     <ion-list>
-      <ion-item class="item-remove-animate item-icon-right" ng-repeat="activity in activities" type="item-text-wrap" href="#/tab/activity/{{activity.id}}}">
-        <h2>{{activity.name}}</h2>
-        <p>{{ activity.date | date }}</p>
+      <ion-item class="item-remove-animate item-icon-right" ng-repeat="activity in activities" type="item-text-wrap" href="#/tab/activity/{{activity.id}}">
+        <h2>[{{ activity.date | date:'yyyy-MM-dd' }}]{{activity.catagory}}活动</h2>
+        <p><b>{{ 9 }}</b>人参加</p>
+        <p class="badge badge-assertive">未结</p>
         <i class="icon ion-chevron-right icon-accessory"></i>
 
-        <ion-option-button class="button-balanced" ng-click="">账户充值</ion-option-button>
+        <ion-option-button class="button-balanced" ng-click="">结算</ion-option-button>
       </ion-item>
     </ion-list>
   </ion-content>

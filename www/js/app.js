@@ -56,13 +56,37 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       }
     }
   })
+  .state('tab.activity-detail', {
+    url: '/activity/:id',
+    views: {
+      'tab-activities': {
+        templateUrl: 'templates/activity/show.html',
+        controller: 'ActivityDetailCtrl'
+      }
+    }
+  })
+  .state('tab.activity-detail-selectPeople', {
+    url: '/activity/:id/peoples',
+    views: {
+      'tab-activities': {
+        templateUrl: 'templates/activity/peoples.html',
+        controller: 'ActivityDetailSelectPeopleCtrl'
+      }
+    }
+  })
 
   .state('tab.persons', {
       url: '/persons',
       views: {
         'tab-persons': {
           templateUrl: 'templates/tab-persons.html',
-          controller: 'PersonsCtrl'
+          controller: 'PersonsCtrl',
+          resolve: {
+            // 异步读取db数据，直到读取成功后才注入到controller中
+            persons: function(Person) {
+              return Person.all();
+            }
+          }
         }
       }
     })

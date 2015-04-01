@@ -1,55 +1,56 @@
-angular.module('starter.controllers', ['datePicker'])
+angular.module('starter.controllers', [])
 
 .controller('ActivitiesCtrl', function($scope, Activity) {
   $scope.activities = Activity.all();
 
 })
-.controller('ActivityAddCtrl', function($scope, $location, $ionicModal, Activity) {
-  $scope.activity = {name: '', catagory: '羽毛球', date: new Date()};
+.controller('ActivityAddCtrl', function($scope, $location, Activity) {
+  $scope.activity = {catagory: '羽毛球', date: new Date()};
 
-  $scope.myDate = '2014-5-4';
-	$ionicModal.fromTemplateUrl('templates/datemodal.html', 
-        function(modal) {
-            $scope.datemodal = modal;
-        },
-        {
-        // Use our scope for the scope of the modal to keep it simple
-        scope: $scope, 
-        // The animation we want to use for the modal entrance
-        animation: 'slide-in-up'
-        }
-    );
-    $scope.opendateModal = function() {
-      $scope.datemodal.show();
-    };
-    $scope.closedateModal = function(modal) {
-    	alert(modal);
-      $scope.datemodal.hide();
-      $scope.activity.date = modal;
-    };
-
-
-
-  /*
+  /* 暂时不使用datePicker插件
   var options = {
     date: new Date(),
-    mode: 'date'
+    mode: 'datetime'
   };
 
-  datePicker.show(options, function(date){
-    alert("date result " + date);  
-  });
+  $scope.showDatePicker = function() {
+	// alert("test");
+	// $scope.activity.date = new Date();
+	
+	datePicker.show(options, function(date){
+    	$scope.activity.date = date;
+  	});
+	
+  };
   */
 
-
-  $scope.save = function(person) {
+  $scope.save = function(activity) {
   	Activity.add(activity);
   	$location.path('/tab/activities');
   }
 })
+.controller('ActivityDetailCtrl', function($scope, $stateParams, $location, $ionicPopup, Activity) {
+  $scope.activity = Activity.get($stateParams.id);
+})
+.controller('ActivityDetailSelectPeopleCtrl', function($scope, $stateParams, $location, $ionicPopup, Activity, Person) {
+  $scope.activity = Activity.get($stateParams.id);
+  $scope.peoples = Person.all();
 
-.controller('PersonsCtrl', function($scope, $ionicPopup, $ionicListDelegate, Person) {
-  $scope.persons = Person.all();
+  $scope.peoples.forEach(function(e) {
+  	e.joined = true;
+  });
+
+  $scope.ensurePeoples = function() {
+  	// $location.path("/tab/activity/{{$scope.activity.id}}");
+  }
+})
+
+
+
+.controller('PersonsCtrl', function($scope, $ionicPopup, $ionicListDelegate, Person, persons) {
+  console.log('=====[controllers]PersonCtrl start');
+  $scope.persons = persons;
+
   $scope.remove = function(person) {
     Person.remove(person);
   }
@@ -79,13 +80,21 @@ angular.module('starter.controllers', ['datePicker'])
 	  $ionicListDelegate.closeOptionButtons();
 	});
   }
+
+  console.log('=====[controllers]PersonCtrl end');
+
 })
 
-.controller('PersonAddCtrl', function($scope, $location, Person) {
-  $scope.person = {name: '', telephone: '', account: 0, email: ''};
+.controller('PersonAddCtrl', function($scope, $location, $window, Person) {
+  $scope.person = Person.new();
   $scope.save = function(person) {
-  	Person.add(person);
-  	$location.path('/tab/persons');
+  	Person.add(person, function() {
+  		// 添加成功
+  		// $location.path('/tab/persons');
+  		$window.location.href = '#/tab/persons';
+  	}, function() {
+  		// 失败
+  	});
   }
 })
 

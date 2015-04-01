@@ -1,0 +1,48 @@
+<ion-view view-title="{{activity.catagory}}">
+
+  <ion-content>
+
+    <div class="list">
+      <div class="item item-avatar">
+        <img src="img/{{activity.catagory}}.png">
+        <h2>{{activity.catagory}}活动</h2>
+        <p>{{activity.date | date:'yyyy-MM-dd HH:mm'}}</p>
+      </div>
+
+      <div class="item item-divider">
+        人员
+      </div>
+
+      <a class="item item-icon-left item-icon-right" href="#/tab/activity/{{activity.id}}/peoples">
+        <i class="icon ion-person-stalker"></i>
+        选择参加人员
+        <span class="badge badge-assertive">9人</span>
+        <i class="icon ion-chevron-right icon-accessory"></i>
+      </a>
+
+      <div class="item item-divider">
+        各种通知
+      </div>
+      <a href="#" class="item item-icon-left">
+        <i class="icon ion-home"></i>
+        邀请通知
+      </a>
+
+      <a href="#" class="item item-icon-left">
+        <i class="icon ion-wifi"></i>
+        参加人员通知
+      </a>
+
+      <a href="#" class="item item-icon-left">
+        <i class="icon ion-card"></i>
+        结算通知
+      </a>
+    </div>
+    
+
+    <button class="button button-balanced button-full button-positive" ng-click="">结算</button>
+    <br>
+    <button class="button button-assertive button-full button-positive button-footer" ng-click="">删除该次活动</button>
+
+  </ion-content>
+</ion-view>

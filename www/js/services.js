@@ -1,6 +1,6 @@
-angular.module('starter.services', [])
+angular.module('starter.services', ['services.db'])
 
-.factory('Person', function() {
+.factory('Person', function(DBHelper, $q) {
   // Might use a resource here that returns a JSON array
 
   // Some fake testing data
@@ -21,8 +21,16 @@ angular.module('starter.services', [])
   var currentId = 3;
 
   return {
+    new: function() {
+      return {name: '', telephone: '', email: '', account: 0};
+    },
+
     all: function() {
-      return persons;
+      var deferred = $q.defer();
+      DBHelper.dbInstance().executeSql("select * from users order by id asc;", [], function(res) {
+        deferred.resolve(DBHelper.convertResToArray(res)); 
+      });
+      return deferred.promise;
     },
     remove: function(person) {
       persons.splice(persons.indexOf(person), 1);
@@ -35,25 +43,34 @@ angular.module('starter.services', [])
       }
       return null;
     },
-    add: function(data) {
-      data.id = currentId;
-      currentId++;
-      persons.push(data)
+    add: function(data, successCallback, errorCallback) {
+      // 插入数据
+      alert("before");
+      alert(JSON.stringify(data));
+      DBHelper.dbInstance().executeSql("INSERT INTO users (name, telephone, email) VALUES (?,?,?)",
+        [data.name, data.telephone, data.email], function(res) {
+        console.log("Insert people success:" + JSON.stringify(res));
+        data.id = res.insertId;
+        successCallback();
+      }, function(e) {
+        console.log("ERROR: " + e.message);
+        errorCallback();
+      });
     }
   };
 })
 
-.factory('Activity', function() {
+.factory('Activity', function(DBHelper) {
   // Might use a resource here that returns a JSON array
 
   // Some fake testing data
   var activities = [{
     id: 1,
-    name: '羽毛球活动',
+    catagory: '羽毛球',
     date: Date.now()
   }, {
     id: 2,
-    name: '聚餐活动',
+    catagory: '聚餐',
     date: Date.now()
   }];
 
