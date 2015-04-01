@@ -4,20 +4,7 @@ angular.module('starter.services', ['services.db'])
   // Might use a resource here that returns a JSON array
 
   // Some fake testing data
-  var persons = [{
-    id: 1,
-    name: '代如刚',
-    telephone: '18100000001',
-    email: 'user1@test.com',
-    account: 100
-  }, {
-    id: 2,
-    name: '李凌',
-    telephone: '18100000002',
-    email: 'user2@test.com',
-    account: 200
-  }];
-
+  var persons = [];
   var currentId = 3;
 
   return {
@@ -28,7 +15,8 @@ angular.module('starter.services', ['services.db'])
     all: function() {
       var deferred = $q.defer();
       DBHelper.dbInstance().executeSql("select * from users order by id asc;", [], function(res) {
-        deferred.resolve(DBHelper.convertResToArray(res)); 
+        persons = DBHelper.convertResToArray(res);
+        deferred.resolve(persons);
       });
       return deferred.promise;
     },
@@ -45,12 +33,12 @@ angular.module('starter.services', ['services.db'])
     },
     add: function(data, successCallback, errorCallback) {
       // 插入数据
-      alert("before");
       alert(JSON.stringify(data));
       DBHelper.dbInstance().executeSql("INSERT INTO users (name, telephone, email) VALUES (?,?,?)",
         [data.name, data.telephone, data.email], function(res) {
         console.log("Insert people success:" + JSON.stringify(res));
         data.id = res.insertId;
+        persons.push(data);
         successCallback();
       }, function(e) {
         console.log("ERROR: " + e.message);

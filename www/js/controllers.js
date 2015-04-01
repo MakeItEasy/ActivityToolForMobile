@@ -45,8 +45,6 @@ angular.module('starter.controllers', [])
   }
 })
 
-
-
 .controller('PersonsCtrl', function($scope, $ionicPopup, $ionicListDelegate, Person, persons) {
   console.log('=====[controllers]PersonCtrl start');
   $scope.persons = persons;
@@ -85,15 +83,15 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('PersonAddCtrl', function($scope, $location, $window, Person) {
+.controller('PersonAddCtrl', function($scope, $location, Person) {
   $scope.person = Person.new();
   $scope.save = function(person) {
   	Person.add(person, function() {
   		// 添加成功
-  		// $location.path('/tab/persons');
-  		$window.location.href = '#/tab/persons';
+  		$location.path('/tab/persons');
   	}, function() {
   		// 失败
+  		alert('添加人员失败！');
   	});
   }
 })

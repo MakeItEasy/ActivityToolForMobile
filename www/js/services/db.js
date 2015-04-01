@@ -10,33 +10,14 @@ angular.module('services.db', [])
   function onDeviceReady() {
     db = window.sqlitePlugin.openDatabase({name: "ActivityApp.sqlite"});
     db.transaction(function(tx) {
-      tx.executeSql('DROP TABLE IF EXISTS users');
+      // tx.executeSql('DROP TABLE IF EXISTS users');
+      // 创建用户表
       tx.executeSql('CREATE TABLE IF NOT EXISTS users (' +
           'id integer primary key AUTOINCREMENT unique,' + 
           'name text unique,' + 
           'telephone text unique,' +
           'email text unique,' +
           'account numeric default 0)');
-
-      // demonstrate PRAGMA: here can get next insertID
-      /*
-      db.executeSql("pragma table_info (users);", [], function(res) {
-        console.log("PRAGMA res: " + JSON.stringify(res));
-      });
-      */
-
-      tx.executeSql("INSERT INTO users (name, telephone, email) VALUES (?,?,?)", ["代如刚", "18100000001", "user1@a.com"], function(tx, res) {
-        console.log("Insert result res: " + JSON.stringify(res));
-
-        db.transaction(function(tx) {
-          tx.executeSql("select id, name, email from users;", [], function(tx, res) {
-            console.log("select result res: " + JSON.stringify(res));
-          });
-        });
-
-      }, function(e) {
-        console.log("ERROR: " + e.message);
-      });
     });
   }
 
@@ -62,3 +43,28 @@ angular.module('services.db', [])
   }; 
 
 });
+
+
+// =================================
+// 从这开始是一些有用的代码片段
+// demonstrate PRAGMA: here can get next insertID
+      /*
+      db.executeSql("pragma table_info (users);", [], function(res) {
+        console.log("PRAGMA res: " + JSON.stringify(res));
+      });
+      */
+
+      /*
+      tx.executeSql("INSERT INTO users (name, telephone, email) VALUES (?,?,?)", ["代如刚", "18100000001", "user1@a.com"], function(tx, res) {
+        console.log("Insert result res: " + JSON.stringify(res));
+
+        db.transaction(function(tx) {
+          tx.executeSql("select id, name, email from users;", [], function(tx, res) {
+            console.log("select result res: " + JSON.stringify(res));
+          });
+        });
+
+      }, function(e) {
+        console.log("ERROR: " + e.message);
+      });
+      */
