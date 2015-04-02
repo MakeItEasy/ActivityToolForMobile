@@ -31,7 +31,9 @@ angular.module('services.db', [])
       tx.executeSql('CREATE TABLE IF NOT EXISTS activities (' +
           'id integer primary key AUTOINCREMENT unique,' + 
           'catagory text,' + 
-          'date integer)');
+          'date integer,' +
+          'fee numeric,' +
+          "paymentFlag integer default 0)");          // 是否结算 0:未结算 1:已结算
     });
   }
 
