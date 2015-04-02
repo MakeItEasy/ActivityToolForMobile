@@ -5,6 +5,7 @@ angular.module('starter.services', ['services.db'])
 // ------------------------------------
 .factory('Person', function(DBHelper, $q) {
   // Some fake testing data
+
   var persons = [];
 
   return {
@@ -22,12 +23,6 @@ angular.module('starter.services', ['services.db'])
     },
     remove: function(person, successCallback, errorCallback) {
       DBHelper.dbInstance().executeSql("delete from users where id = ?;", [person.id], function(res) {
-        for (var i = 0; i < persons.length; i++) {
-          if (persons[i].id === person.id) {
-            persons.splice(i, 1);
-            break;
-          }
-        }
         successCallback();
       }, function(e) {
         console.log("ERROR: " + e.message);
@@ -46,8 +41,6 @@ angular.module('starter.services', ['services.db'])
       // 插入数据
       DBHelper.dbInstance().executeSql("INSERT INTO users (name, telephone, email) VALUES (?,?,?)",
         [data.name, data.telephone, data.email], function(res) {
-        data.id = res.insertId;
-        persons.push(data);
         successCallback();
       }, function(e) {
         console.log("ERROR: " + e.message);
