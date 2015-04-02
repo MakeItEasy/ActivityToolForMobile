@@ -64,11 +64,18 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     }
   })
   .state('tab.activity-detail', {
+    cache: false,
     url: '/activity/:id',
     views: {
       'tab-activities': {
         templateUrl: 'templates/activity/show.html',
-        controller: 'ActivityDetailCtrl'
+        controller: 'ActivityDetailCtrl',
+        resolve: {
+          // 异步读取db数据，直到读取成功后才注入到controller中
+          activity: function(Activity) {
+            return Activity.all();
+          }
+        }
       }
     }
   })

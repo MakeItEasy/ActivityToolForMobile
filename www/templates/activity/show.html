@@ -4,9 +4,11 @@
 
     <div class="list">
       <div class="item item-avatar">
-        <img src="img/{{activity.catagory}}.png">
+        <img src="img/{{activity.catagory == '羽毛球' ? 'yumaoqiu' : 'jucan'}}.png">
         <h2>{{activity.catagory}}活动</h2>
         <p>{{activity.date | date:'yyyy-MM-dd HH:mm'}}</p>
+        <p ng-hide="paymented" class="badge badge-assertive">未结算</p>
+        <p ng-show="paymented" class="badge badge-balanced">已结算</p>
       </div>
 
       <div class="item item-divider">
@@ -21,28 +23,29 @@
       </a>
 
       <div class="item item-divider">
-        各种通知
+        通知
       </div>
-      <a href="#" class="item item-icon-left">
+      <a ng-hide="paymented" href="#" class="item item-icon-left">
         <i class="icon ion-home"></i>
         邀请通知
       </a>
 
-      <a href="#" class="item item-icon-left">
+      <a ng-hide="paymented" href="#" class="item item-icon-left">
         <i class="icon ion-wifi"></i>
         参加人员通知
       </a>
 
-      <a href="#" class="item item-icon-left">
+      <a ng-show="paymented" href="#" class="item item-icon-left">
         <i class="icon ion-card"></i>
         结算通知
       </a>
     </div>
-    
 
-    <button class="button button-balanced button-full button-positive" ng-click="">结算</button>
-    <br>
-    <button class="button button-assertive button-full button-positive button-footer" ng-click="">删除该次活动</button>
+    <button ng-hide="paymented" class="button button-balanced button-full button-positive" ng-click="payment()">结算</button>
+    <div ng-hide="paymented">
+      <br>
+      <button class="button button-assertive button-full button-positive button-footer" ng-click="">删除该次活动</button>
+    </div>
 
   </ion-content>
 </ion-view>

@@ -34,6 +34,11 @@ angular.module('starter.controllers', [])
 })
 .controller('ActivityDetailCtrl', function($scope, $stateParams, $location, $ionicPopup, Activity) {
   $scope.activity = Activity.get($stateParams.id);
+  $scope.paymented = ($scope.activity.paymentFlag == 1);
+
+  $scope.payment = function() {
+  	$scope.paymented = true;
+  }
 })
 .controller('ActivityDetailSelectPeopleCtrl', function($scope, $stateParams, $location, $ionicPopup, Activity, Person) {
   $scope.activity = Activity.get($stateParams.id);

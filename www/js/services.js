@@ -138,4 +138,6 @@ angular.module('starter.services', ['services.db'])
       });
     }
   };
-});
+})
+
+;
