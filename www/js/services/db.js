@@ -34,6 +34,12 @@ angular.module('services.db', [])
           'date integer,' +
           'fee numeric,' +
           "paymentFlag integer default 0)");          // 是否结算 0:未结算 1:已结算
+
+      // tx.executeSql('DROP TABLE IF EXISTS activity_users');
+      // 创建用户参加活动表
+      tx.executeSql('CREATE TABLE IF NOT EXISTS activity_users (' +
+          'activityId integer,' + 
+          'userId integer)');
     });
   }
 

@@ -32,9 +32,10 @@ angular.module('starter.controllers', [])
   	});
   }
 })
-.controller('ActivityDetailCtrl', function($scope, $stateParams, $location, $ionicPopup, Activity) {
+.controller('ActivityDetailCtrl', function($scope, $stateParams, $location, $ionicPopup, Activity, peoples) {
   $scope.activity = Activity.get($stateParams.id);
   $scope.paymented = ($scope.activity.paymentFlag == 1);
+  $scope.peoples = peoples;
 
   $scope.payment = function() {
   	$scope.paymented = true;

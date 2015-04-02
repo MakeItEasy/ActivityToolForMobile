@@ -72,9 +72,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
         controller: 'ActivityDetailCtrl',
         resolve: {
           // 异步读取db数据，直到读取成功后才注入到controller中
-          activity: function(Activity) {
-            return Activity.all();
-          }
+          peoples: function($stateParams, Activity) {
+            return Activity.peoplesPromise($stateParams.id);
+          }        
         }
       }
     }
