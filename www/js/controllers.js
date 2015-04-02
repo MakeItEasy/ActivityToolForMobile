@@ -45,6 +45,9 @@ angular.module('starter.controllers', [])
   }
 })
 
+// ====================================
+// 人员管理
+// ------------------------------------
 .controller('PersonsCtrl', function($scope, $ionicPopup, $ionicListDelegate, Person, persons) {
   console.log('=====[controllers]PersonCtrl start');
   $scope.persons = persons;

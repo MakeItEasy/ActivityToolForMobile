@@ -4,11 +4,8 @@ angular.module('starter.services', ['services.db'])
 // 人员管理
 // ------------------------------------
 .factory('Person', function(DBHelper, $q) {
-  // Might use a resource here that returns a JSON array
-
   // Some fake testing data
   var persons = [];
-  var currentId = 3;
 
   return {
     new: function() {
@@ -25,7 +22,12 @@ angular.module('starter.services', ['services.db'])
     },
     remove: function(person, successCallback, errorCallback) {
       DBHelper.dbInstance().executeSql("delete from users where id = ?;", [person.id], function(res) {
-        persons.splice(persons.indexOf(person), 1);
+        for (var i = 0; i < persons.length; i++) {
+          if (persons[i].id === person.id) {
+            persons.splice(i, 1);
+            break;
+          }
+        }
         successCallback();
       }, function(e) {
         console.log("ERROR: " + e.message);
