@@ -46,6 +46,15 @@ angular.module('starter.services', ['services.db'])
         console.log("ERROR: " + e.message);
         errorCallback();
       });
+    },
+    update: function(data, successCallback, errorCallback) {
+      DBHelper.dbInstance().executeSql("UPDATE users SET name=?, telephone=?, email=? WHERE id=?",
+        [data.name, data.telephone, data.email, data.id], function(res) {
+        successCallback();
+      }, function(e) {
+        console.log("ERROR: " + e.message);
+        errorCallback();
+      });
     }
   };
 })

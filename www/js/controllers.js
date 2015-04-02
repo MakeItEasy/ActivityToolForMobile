@@ -101,11 +101,15 @@ angular.module('starter.controllers', [])
   }
 })
 
-.controller('PersonDetailCtrl', function($scope, $stateParams, $location, $ionicPopup, Person) {
+.controller('PersonDetailCtrl', function($scope, $stateParams, $location, $window, $ionicPopup, Person) {
   $scope.person = Person.get($stateParams.id);
-
   $scope.update = function(person) {
-  	$location.path('/tab/persons');
+	Person.update(person, function() {
+  		$window.location.href = "#/tab/persons";
+  	}, function() {
+  		// 失败
+  		alert('更新人员失败！');
+  	});
   }
 
   $scope.showDeleteConfirm = function(person) {
