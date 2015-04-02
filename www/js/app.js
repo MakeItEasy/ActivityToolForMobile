@@ -39,11 +39,18 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
   // Each tab has its own nav history stack:
 
   .state('tab.activities', {
+    cache: false,
     url: '/activities',
     views: {
       'tab-activities': {
         templateUrl: 'templates/tab-activities.html',
-        controller: 'ActivitiesCtrl'
+        controller: 'ActivitiesCtrl',
+        resolve: {
+          // 异步读取db数据，直到读取成功后才注入到controller中
+          activities: function(Activity) {
+            return Activity.all();
+          }
+        }
       }
     }
   })

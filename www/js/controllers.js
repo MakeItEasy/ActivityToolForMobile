@@ -1,11 +1,10 @@
 angular.module('starter.controllers', [])
 
-.controller('ActivitiesCtrl', function($scope, Activity) {
-  $scope.activities = Activity.all();
-
+.controller('ActivitiesCtrl', function($scope, activities) {
+  $scope.activities = activities;
 })
-.controller('ActivityAddCtrl', function($scope, $location, Activity) {
-  $scope.activity = {catagory: '羽毛球', date: new Date()};
+.controller('ActivityAddCtrl', function($scope, $location, $window, Activity) {
+  $scope.activity = Activity.new();
 
   /* 暂时不使用datePicker插件
   var options = {
@@ -25,8 +24,12 @@ angular.module('starter.controllers', [])
   */
 
   $scope.save = function(activity) {
-  	Activity.add(activity);
-  	$location.path('/tab/activities');
+  	Activity.add(activity, function() {
+  		$window.location.href = "#/tab/activities";
+  	}, function() {
+  		// 失败
+  		alert('添加失败！');
+  	});
   }
 })
 .controller('ActivityDetailCtrl', function($scope, $stateParams, $location, $ionicPopup, Activity) {
@@ -49,7 +52,6 @@ angular.module('starter.controllers', [])
 // 人员管理
 // ------------------------------------
 .controller('PersonsCtrl', function($scope, $ionicPopup, $ionicListDelegate, Person, persons) {
-  console.log('=====[controllers]PersonCtrl start');
   $scope.persons = persons;
 
   $scope.remove = function(person) {
@@ -76,13 +78,15 @@ angular.module('starter.controllers', [])
 	
 	myPopup.then(function(res) {
 	  if(res) {
-	  	person.account += parseFloat(res);
+	  	Person.charge(person, parseFloat(res), function() {
+	  		$ionicListDelegate.closeOptionButtons();
+	  	}, function() {
+	  		// 失败
+	  		alert('充值失败!');
+	  	});
 	  }
-	  $ionicListDelegate.closeOptionButtons();
 	});
   }
-
-  console.log('=====[controllers]PersonCtrl end');
 
 })
 

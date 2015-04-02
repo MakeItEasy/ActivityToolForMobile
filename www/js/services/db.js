@@ -18,6 +18,20 @@ angular.module('services.db', [])
           'telephone text unique,' +
           'email text unique,' +
           'account numeric default 0)');
+
+      tx.executeSql('DROP TABLE IF EXISTS charge');
+      // 创建用户表
+      tx.executeSql('CREATE TABLE IF NOT EXISTS charge (' +
+          'chargeDate integer,' + 
+          'userId integer,' + 
+          'amount numeric)');
+
+      tx.executeSql('DROP TABLE IF EXISTS activities');
+      // 创建用户表
+      tx.executeSql('CREATE TABLE IF NOT EXISTS activities (' +
+          'id integer primary key AUTOINCREMENT unique,' + 
+          'catagory text,' + 
+          'date integer)');
     });
   }
 
