@@ -1,5 +1,8 @@
 angular.module('starter.services', ['services.db'])
 
+// ====================================
+// 人员管理
+// ------------------------------------
 .factory('Person', function(DBHelper, $q) {
   // Might use a resource here that returns a JSON array
 
@@ -11,7 +14,7 @@ angular.module('starter.services', ['services.db'])
     new: function() {
       return {name: '', telephone: '', email: '', account: 0};
     },
-
+    // 返回的是一个promise对象
     all: function() {
       var deferred = $q.defer();
       DBHelper.dbInstance().executeSql("select * from users order by id asc;", [], function(res) {
@@ -20,8 +23,14 @@ angular.module('starter.services', ['services.db'])
       });
       return deferred.promise;
     },
-    remove: function(person) {
-      persons.splice(persons.indexOf(person), 1);
+    remove: function(person, successCallback, errorCallback) {
+      DBHelper.dbInstance().executeSql("delete from users where id = ?;", [person.id], function(res) {
+        persons.splice(persons.indexOf(person), 1);
+        successCallback();
+      }, function(e) {
+        console.log("ERROR: " + e.message);
+        errorCallback();
+      });
     },
     get: function(personId) {
       for (var i = 0; i < persons.length; i++) {
@@ -33,10 +42,8 @@ angular.module('starter.services', ['services.db'])
     },
     add: function(data, successCallback, errorCallback) {
       // 插入数据
-      alert(JSON.stringify(data));
       DBHelper.dbInstance().executeSql("INSERT INTO users (name, telephone, email) VALUES (?,?,?)",
         [data.name, data.telephone, data.email], function(res) {
-        console.log("Insert people success:" + JSON.stringify(res));
         data.id = res.insertId;
         persons.push(data);
         successCallback();
@@ -48,6 +55,9 @@ angular.module('starter.services', ['services.db'])
   };
 })
 
+// ====================================
+// 活动管理
+// ------------------------------------
 .factory('Activity', function(DBHelper) {
   // Might use a resource here that returns a JSON array
 

@@ -83,12 +83,14 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('PersonAddCtrl', function($scope, $location, Person) {
+.controller('PersonAddCtrl', function($scope, $location, $window, Person) {
   $scope.person = Person.new();
   $scope.save = function(person) {
   	Person.add(person, function() {
   		// 添加成功
-  		$location.path('/tab/persons');
+  		// 这个地方如果使用下面的$location就不会跳转，但是如果把$location代码放到外面就可以跳转（这种情况就不是需要的了）
+  		$window.location.href = "#/tab/persons";
+  		// $location.path('/tab/persons');
   	}, function() {
   		// 失败
   		alert('添加人员失败！');
@@ -110,8 +112,12 @@ angular.module('starter.controllers', [])
 	});
 	confirmPopup.then(function(res) {
 		if(res) {
-			Person.remove(person);
-			$location.path('/tab/persons');
+			Person.remove(person, function() {
+				$location.path('/tab/persons');
+			}, function() {
+		  		// 失败
+		  		alert('删除人员失败！');
+		  	});
     	}
 	});
   };
