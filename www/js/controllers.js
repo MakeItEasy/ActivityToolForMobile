@@ -36,6 +36,7 @@ angular.module('starter.controllers', [])
   $scope.activity = Activity.get($stateParams.id);
   $scope.paymented = ($scope.activity.paymentFlag == 1);
   $scope.peoples = peoples;
+  $scope.joinedUserNames = peoples.map(function(x) {return x.name;}).join(', ')
 
   $scope.payment = function() {
   	$scope.paymented = true;

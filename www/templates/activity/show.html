@@ -10,17 +10,21 @@
         <p ng-hide="paymented" class="badge badge-assertive">未结算</p>
         <p ng-show="paymented" class="badge badge-balanced">已结算</p>
       </div>
-
+      
       <div class="item item-divider">
-        人员
+        人员({{peoples.length}}人)
       </div>
-
-      <a class="item item-icon-left item-icon-right" href="#/tab/activity/{{activity.id}}/peoples">
-        <i class="icon ion-person-stalker"></i>
-        选择参加人员
-        <span class="badge badge-assertive">{{peoples.length}}人</span>
-        <i class="icon ion-chevron-right icon-accessory"></i>
-      </a>
+      <div ng-hide="paymented">
+        <a class="item item-icon-left item-icon-right" href="#/tab/activity/{{activity.id}}/peoples">
+          <i class="icon ion-person-stalker"></i>
+          选择参加人员
+          <span class="badge badge-balanced">{{peoples.length}}人</span>
+          <i class="icon ion-chevron-right icon-accessory"></i>
+        </a>
+      </div>
+      <div class="padding">
+        {{ joinedUserNames }}
+      </div>
 
       <div class="item item-divider">
         通知
