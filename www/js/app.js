@@ -80,11 +80,18 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     }
   })
   .state('tab.activity-detail-selectPeople', {
+    cache: false,
     url: '/activity/:id/peoples',
     views: {
       'tab-activities': {
         templateUrl: 'templates/activity/peoples.html',
-        controller: 'ActivityDetailSelectPeopleCtrl'
+        controller: 'ActivityDetailSelectPeopleCtrl',
+        resolve: {
+          // 异步读取db数据，直到读取成功后才注入到controller中
+          allUsers: function($stateParams, Activity) {
+            return Activity.allUsersPromise($stateParams.id);
+          }        
+        }
       }
     }
   })

@@ -41,16 +41,48 @@ angular.module('starter.controllers', [])
   	$scope.paymented = true;
   }
 })
-.controller('ActivityDetailSelectPeopleCtrl', function($scope, $stateParams, $location, $ionicPopup, Activity, Person) {
-  $scope.activity = Activity.get($stateParams.id);
-  $scope.peoples = Person.all();
-
-  $scope.peoples.forEach(function(e) {
-  	e.joined = true;
-  });
+.controller('ActivityDetailSelectPeopleCtrl', function($scope, $stateParams, $q, $location, filterFilter, orderByFilter, DBHelper, Activity, allUsers) {
+  // 参加的人员在最上面
+  $scope.peoples = orderByFilter(allUsers, '-joined');
+  $scope.activityId = $stateParams.id;
 
   $scope.ensurePeoples = function() {
-  	// $location.path("/tab/activity/{{$scope.activity.id}}");
+  	var joinedUsers = filterFilter($scope.peoples, {joined: true});
+  	var deferred = $q.defer();
+  	DBHelper.dbInstance().transaction(function(fx) {
+  		fx.executeSql("delete from activity_users where activityId=?", [$scope.activityId], function(fx, res) {
+  			console.log("deleted joined users for activity: " + $scope.activityId);
+  			console.log("deleted record: " + res.rowsAffected);
+  			if(joinedUsers.length <= 0) {
+		    	deferred.resolve("true");
+  			} else {
+	  			var insertCnt = 0;
+	  			for (var i = 0; i < joinedUsers.length; i++) {
+	  				console.log("prepare to insert: "  + joinedUsers[i].id);
+				    fx.executeSql("INSERT INTO activity_users (activityId, userId) VALUES (?,?)", [$scope.activityId, joinedUsers[i].id], function(fx, res) {
+				    	console.log("inserted a user for activity: " + joinedUsers[insertCnt].id);
+						insertCnt++;
+						// 注意这个地方该变量的使用，而不能用i,因为i永远是joinedUser.length，所以会越界
+				    	if(insertCnt == joinedUsers.length) {
+	  				    	deferred.resolve("true");
+				    	}
+				    }, function(e) {
+			  			console.log("Error: " + JSON.stringify(e));
+				    	deferred.reject(JSON.stringify(e));
+				    });
+		  		};
+		  	}
+  		}, function(e) {
+		  	console.log("Error: " + JSON.stringify(e));
+		  	deferred.reject(JSON.stringify(e));
+  		});
+	});
+
+	deferred.promise.then(function(success) {
+		$location.path("/tab/activity/" + $scope.activityId);
+	}, function(error) {
+		alert("失败! 错误信息: " + error);
+	});
   }
 })
 

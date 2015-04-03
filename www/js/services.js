@@ -140,8 +140,18 @@ angular.module('starter.services', ['services.db'])
     peoplesPromise: function(id) {
       var deferred = $q.defer();
       DBHelper.dbInstance().executeSql("select users.id as id, users.name as name from activity_users left join users on users.id = activity_users.userId where activity_users.activityId = ?;", [id], function(res) {
-        peoples = DBHelper.convertResToArray(res);
-        deferred.resolve(peoples);
+        deferred.resolve(DBHelper.convertResToArray(res));
+      });
+      return deferred.promise;
+    },
+    allUsersPromise: function(id) {
+      var deferred = $q.defer();
+      var sql = "select id, name, 'true' as joined from users where users.id in (select userId from activity_users where activityId=?)" +
+                " union " +
+                "select id, name, 'false' as joined from users where users.id not in (select userId from activity_users where activityId=?)";
+
+      DBHelper.dbInstance().executeSql(sql, [id, id], function(res) {
+        deferred.resolve(DBHelper.convertResToArray(res));
       });
       return deferred.promise;
     }

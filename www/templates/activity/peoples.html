@@ -1,13 +1,13 @@
 <ion-view view-title="选择人员({{ (peoples | filter:{joined:true}).length }})">
   <ion-nav-buttons side="right">
-    <a class="button button-clear" ng-click="ensurePeoples()" href="#/tab/activity/1">确定</a>
+    <button class="button button-clear" ng-click="ensurePeoples()">确定</button>
   </ion-nav-buttons>
 
   <ion-content>
     <ion-list>
 	  <ion-item ng-repeat="people in peoples" class="item-checkbox">
 		<label class="checkbox">
-	    	<input type="checkbox" ng-model="people.joined">
+	    	<input type="checkbox" ng-model="people.joined" ng-true-value="'true'" ng-false-value="'false'">
 	    </label>
 	  	{{people.name}}
 	  </ion-item>
