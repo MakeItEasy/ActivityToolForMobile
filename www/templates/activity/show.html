@@ -1,7 +1,9 @@
 <ion-view view-title="{{activity.catagory}}">
-
+  <ion-nav-buttons side="right">
+    <a ng-hide="paymented" class="button button-clear" href="#/tab/activity/{{activity.id}}/payment">结算</a>
+  </ion-nav-buttons>
+  
   <ion-content>
-
     <div class="list">
       <div class="item item-avatar">
         <img src="img/{{activity.catagory == '羽毛球' ? 'yumaoqiu' : 'jucan'}}.png">
@@ -45,7 +47,6 @@
       </a>
     </div>
 
-    <button ng-hide="paymented" class="button button-balanced button-full button-positive" ng-click="payment()">结算</button>
     <div ng-hide="paymented">
       <br>
       <button class="button button-assertive button-full button-positive button-footer" ng-click="">删除该次活动</button>

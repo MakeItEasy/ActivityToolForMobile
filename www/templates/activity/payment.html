@@ -1,0 +1,38 @@
+<ion-view view-title="活动结算">  
+  <ion-content>
+    <div class="list">
+      <div class="item item-divider">
+        结算(AA制)
+      </div>
+      <div class="item">
+        参加人数
+        <span style="float:right;">{{peoples.length}}人</span>
+      </div>
+
+      <label class="item item-input">
+        <span class="input-label">活动费用</span>
+        <input type="number" placeholder="请输入金额" ng-model="totalAmount" style="text-align:right;">
+      </label>
+      <div class="item">
+        每人花费
+        <span style="float:right;">{{totalAmount/peoples.length | currency: '¥'}}</span>
+      </div>
+    </div>
+
+    <button class="button button-balanced button-full button-positive" ng-click="">结算</button>
+
+	<br>
+    <ion-list class="list">
+      <div class="item item-divider">
+        费用明细
+      </div>
+	  <ion-item ng-repeat="people in peoples">
+	  	{{people.name}}
+	  	<span style="float:right;">
+	  		{{totalAmount/peoples.length | currency: '¥'}}
+	  	</span>
+	  </ion-item>
+	</ion-list>
+
+  </ion-content>
+</ion-view>

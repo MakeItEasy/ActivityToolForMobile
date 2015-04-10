@@ -79,6 +79,22 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       }
     }
   })
+  .state('tab.activity-payment', {
+    cache: false,
+    url: '/activity/:id/payment',
+    views: {
+      'tab-activities': {
+        templateUrl: 'templates/activity/payment.html',
+        controller: 'ActivityPaymentCtrl',
+        resolve: {
+          // 异步读取db数据，直到读取成功后才注入到controller中
+          peoples: function($stateParams, Activity) {
+            return Activity.peoplesPromise($stateParams.id);
+          }        
+        }
+      }
+    }
+  })
   .state('tab.activity-detail-selectPeople', {
     cache: false,
     url: '/activity/:id/peoples',

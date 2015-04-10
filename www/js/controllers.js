@@ -32,15 +32,11 @@ angular.module('starter.controllers', [])
   	});
   }
 })
-.controller('ActivityDetailCtrl', function($scope, $stateParams, $location, $ionicPopup, Activity, peoples) {
+.controller('ActivityDetailCtrl', function($scope, $stateParams, $location, Activity, peoples) {
   $scope.activity = Activity.get($stateParams.id);
   $scope.paymented = ($scope.activity.paymentFlag == 1);
   $scope.peoples = peoples;
   $scope.joinedUserNames = peoples.map(function(x) {return x.name;}).join(', ')
-
-  $scope.payment = function() {
-  	$scope.paymented = true;
-  }
 })
 .controller('ActivityDetailSelectPeopleCtrl', function($scope, $stateParams, $q, $location, filterFilter, orderByFilter, DBHelper, Activity, allUsers) {
   // 参加的人员在最上面
@@ -62,8 +58,8 @@ angular.module('starter.controllers', [])
 	  				console.log("prepare to insert: "  + joinedUsers[i].id);
 				    fx.executeSql("INSERT INTO activity_users (activityId, userId) VALUES (?,?)", [$scope.activityId, joinedUsers[i].id], function(fx, res) {
 				    	console.log("inserted a user for activity: " + joinedUsers[insertCnt].id);
-						insertCnt++;
-						// 注意这个地方该变量的使用，而不能用i,因为i永远是joinedUser.length，所以会越界
+						  insertCnt++;
+						  // 注意这个地方该变量的使用，而不能用i,因为i永远是joinedUser.length，所以会越界
 				    	if(insertCnt == joinedUsers.length) {
 	  				    	deferred.resolve("true");
 				    	}
@@ -85,6 +81,11 @@ angular.module('starter.controllers', [])
 		alert("失败! 错误信息: " + error);
 	});
   }
+})
+.controller('ActivityPaymentCtrl', function($scope, $stateParams, $location, Activity, peoples) {
+  $scope.activity = Activity.get($stateParams.id);
+  $scope.peoples = peoples;
+  $scope.totalAmount = null;
 })
 
 // ====================================
