@@ -13,6 +13,24 @@
         <p ng-show="paymented" class="badge badge-balanced">已结算</p>
       </div>
       
+      <div ng-show="paymented">
+        <div class="item item-divider">
+          结算信息
+        </div>
+        <div class="item">
+          活动费用
+          <span style="float:right;">{{activity.fee | currency: '¥'}}</span>
+        </div>
+        <div class="item">
+          参加人数
+          <span style="float:right;">{{activity.userCount}}人</span>
+        </div>
+        <div class="item">
+          每人花费
+          <span style="float:right;">{{activity.fee/activity.userCount | currency: '¥'}}</span>
+        </div>
+      </div>
+
       <div class="item item-divider">
         人员({{peoples.length}}人)
       </div>
@@ -24,7 +42,7 @@
           <i class="icon ion-chevron-right icon-accessory"></i>
         </a>
       </div>
-      <div class="padding">
+      <div class="item padding" ng-show="peoples.length>0">
         {{ joinedUserNames }}
       </div>
 

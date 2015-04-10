@@ -6,13 +6,12 @@
     <ion-list>
       <ion-item class="item-remove-animate item-icon-right" ng-repeat="activity in activities" type="item-text-wrap" href="#/tab/activity/{{activity.id}}" ng-init="paymented = (activity.paymentFlag == 1)">
         <h2>[{{ activity.date | date:'yyyy-MM-dd' }}]{{activity.catagory}}活动</h2>
-        <p><b>{{ 9 }}</b>人参加</p>
+        <span ng-show="paymented"><b>{{ activity.userCount }}</b>人参加</span>
+        <span ng-show="paymented" style="float:right;">总费用: <b>{{ activity.fee | currency: '¥' }}</b></span>
         <p ng-hide="paymented" class="badge badge-assertive">未结</p>
         <span>
           <i class="icon ion-chevron-right icon-accessory"></i>
         </span>
-
-        <ion-option-button class="button-balanced" ng-click="">结算</ion-option-button>
       </ion-item>
     </ion-list>
   </ion-content>

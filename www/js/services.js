@@ -137,6 +137,13 @@ angular.module('starter.services', ['services.db'])
         errorCallback();
       });
     },
+    activityPromise: function(id) {
+      var deferred = $q.defer();
+      DBHelper.dbInstance().executeSql("select * from activities where id = ?", [id], function(res) {
+        deferred.resolve(DBHelper.convertResToArray(res)[0]);
+      });
+      return deferred.promise;
+    },
     peoplesPromise: function(id) {
       var deferred = $q.defer();
       DBHelper.dbInstance().executeSql("select users.id as id, users.name as name from activity_users left join users on users.id = activity_users.userId where activity_users.activityId = ?;", [id], function(res) {

@@ -32,8 +32,8 @@ angular.module('starter.controllers', [])
   	});
   }
 })
-.controller('ActivityDetailCtrl', function($scope, $stateParams, $location, Activity, peoples) {
-  $scope.activity = Activity.get($stateParams.id);
+.controller('ActivityDetailCtrl', function($scope, $stateParams, $location, activity, peoples) {
+  $scope.activity = activity;
   $scope.paymented = ($scope.activity.paymentFlag == 1);
   $scope.peoples = peoples;
   $scope.joinedUserNames = peoples.map(function(x) {return x.name;}).join(', ')
@@ -73,19 +73,52 @@ angular.module('starter.controllers', [])
 		  	console.log("Error: " + JSON.stringify(e));
 		  	deferred.reject(JSON.stringify(e));
   		});
-	});
+  	});
 
-	deferred.promise.then(function(success) {
-		$location.path("/tab/activity/" + $scope.activityId);
-	}, function(error) {
-		alert("失败! 错误信息: " + error);
-	});
+  	deferred.promise.then(function(success) {
+  		$location.path("/tab/activity/" + $scope.activityId);
+  	}, function(error) {
+  		alert("失败! 错误信息: " + error);
+  	});
   }
 })
-.controller('ActivityPaymentCtrl', function($scope, $stateParams, $location, Activity, peoples) {
+.controller('ActivityPaymentCtrl', function($scope, $stateParams, $location, $q, $ionicPopup, DBHelper, Activity, peoples) {
   $scope.activity = Activity.get($stateParams.id);
   $scope.peoples = peoples;
   $scope.totalAmount = null;
+
+  $scope.showPaymentConfirm = function(totalAmount) {
+    var confirmPopup = $ionicPopup.confirm({
+      scope: $scope,
+      title: '结算确认',
+      template: '结算后将扣除参加人员余额，不可更改。您确定要进行结算吗?'
+    });
+    confirmPopup.then(function(res) {
+      if(res) {
+        // 进行结算逻辑
+        var deferred = $q.defer();
+        DBHelper.dbInstance().transaction(function(fx) {
+          fx.executeSql("update activities set paymentFlag=1, fee=?, userCount=? where id=?", [totalAmount, $scope.peoples.length, $scope.activity.id], function(fx, res) {
+            fx.executeSql("update users set account=account-? where id in (select userId from activity_users where activityId=?)", [totalAmount/$scope.peoples.length, $scope.activity.id], function(fx, res) {
+              deferred.resolve("true");
+            }, function(e) {
+              console.log("Error: " + JSON.stringify(e));
+              deferred.reject(JSON.stringify(e));
+            });
+          }, function(e) {
+            deferred.reject(JSON.stringify(e));
+          });
+        });
+
+        deferred.promise.then(function(success) {
+          $location.path("/tab/activity/" + $scope.activity.id);
+        }, function(error) {
+          alert("结算失败! 错误信息: " + error);
+        });
+
+      }
+    });
+  };
 })
 
 // ====================================
@@ -158,25 +191,20 @@ angular.module('starter.controllers', [])
 
   $scope.showDeleteConfirm = function(person) {
   	var confirmPopup = $ionicPopup.confirm({
-		title: '删除确认',
-		template: '您确定要删除该人员信息吗?'
-	});
-	confirmPopup.then(function(res) {
-		if(res) {
-			Person.remove(person, function() {
-				$location.path('/tab/persons');
-			}, function() {
+  		title: '删除确认',
+  		template: '您确定要删除该人员信息吗?'
+  	});
+	  confirmPopup.then(function(res) {
+		  if(res) {
+  			Person.remove(person, function() {
+  				$location.path('/tab/persons');
+  			}, function() {
 		  		// 失败
 		  		alert('删除人员失败！');
 		  	});
     	}
-	});
+	  });
   };
-
-  $scope.remove = function(person) {
-    Person.remove(person);
-    $location.path('/tab/persons');
-  }
 })
 
 .controller('SettingCtrl', function($scope) {

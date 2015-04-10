@@ -32,7 +32,8 @@ angular.module('services.db', [])
           'id integer primary key AUTOINCREMENT unique,' + 
           'catagory text,' + 
           'date integer,' +
-          'fee numeric,' +
+          'fee numeric default 0,' +
+          'userCount integer default 0,' +
           "paymentFlag integer default 0)");          // 是否结算 0:未结算 1:已结算
 
       // tx.executeSql('DROP TABLE IF EXISTS activity_users');
