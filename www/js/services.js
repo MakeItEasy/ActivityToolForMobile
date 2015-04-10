@@ -117,8 +117,20 @@ angular.module('starter.services', ['services.db'])
       });
       return deferred.promise;
     },
-    remove: function(activity) {
-      activities.splice(activities.indexOf(activity), 1);
+    remove: function(activity, successCallback, errorCallback) {
+      DBHelper.dbInstance().transaction(function(fx) {
+        fx.executeSql("DELETE FROM activity_users WHERE activityId = ?", [activity.id], function(fx, res) {
+          fx.executeSql("DELETE FROM activities WHERE id = ?", [activity.id], function(fx, res) {
+            successCallback();
+          }, function(e) {
+            console.log("ERROR: " + e.message);
+            errorCallback();
+          });
+        }, function(e) {
+          console.log("ERROR: " + e.message);
+          errorCallback();
+        });
+      });
     },
     get: function(activityId) {
       for (var i = 0; i < activities.length; i++) {

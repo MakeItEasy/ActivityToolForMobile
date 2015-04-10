@@ -32,11 +32,29 @@ angular.module('starter.controllers', [])
   	});
   }
 })
-.controller('ActivityDetailCtrl', function($scope, $stateParams, $location, activity, peoples) {
+.controller('ActivityDetailCtrl', function($scope, $stateParams, $location, $ionicPopup, Activity, activity, peoples) {
   $scope.activity = activity;
   $scope.paymented = ($scope.activity.paymentFlag == 1);
   $scope.peoples = peoples;
-  $scope.joinedUserNames = peoples.map(function(x) {return x.name;}).join(', ')
+  $scope.joinedUserNames = peoples.map(function(x) {return x.name;}).join(', ');
+
+  $scope.showDeleteConfirm = function(activity) {
+    var confirmPopup = $ionicPopup.confirm({
+      title: '删除确认',
+      template: '您确定要删除该活动信息吗?'
+    });
+    confirmPopup.then(function(res) {
+      if(res) {
+        Activity.remove(activity, function() {
+          $location.path('/tab/activities');
+        }, function() {
+          // 失败
+          alert('删除活动失败！');
+        });
+      }
+    });
+  };
+
 })
 .controller('ActivityDetailSelectPeopleCtrl', function($scope, $stateParams, $q, $location, filterFilter, orderByFilter, DBHelper, Activity, allUsers) {
   // 参加的人员在最上面
