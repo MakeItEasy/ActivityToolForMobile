@@ -1,0 +1,45 @@
+<ion-view view-title="通知">  
+  <ion-content>
+    
+    <div class="padding">
+
+<!-- ================================邀请通知======================================== -->
+    	
+<textarea ng-show="noticeType == 1" rows="15" class="notice">邀请通知
+
+今定于[{{activity.date | date:'yyyy-MM-dd HH:mm'}}]进行{{activity.catagory}}活动，有意参加者请回复！
+
+刘妍
+{{ currentDate | date:'yyyy-MM-dd'}}
+</textarea>
+
+<!-- ==============================参加人员通知========================================== -->
+
+<textarea ng-show="noticeType == 2" rows="15" class="notice">参加人员通知
+
+[{{activity.date | date:'yyyy-MM-dd HH:mm'}}]{{activity.catagory}}活动截止目前参加人员名单如下:
+
+{{joinedUserNames}}
+
+刘妍
+{{ currentDate | date:'yyyy-MM-dd'}}
+</textarea>
+
+<!-- ===============================结算通知========================================= -->
+
+<textarea ng-show="noticeType == 3" rows="15" class="notice">结算通知
+
+[{{activity.date | date:'yyyy-MM-dd HH:mm'}}]{{activity.catagory}}活动费用信息如下:
+活动费用: {{activity.fee | currency: '¥'}}
+参加人数: {{activity.userCount}}人
+每人花费: {{activity.fee/activity.userCount | currency: '¥'}}
+人员名单: {{joinedUserNames}}
+
+刘妍
+{{ currentDate | date:'yyyy-MM-dd'}}
+</textarea>
+
+    </div>
+
+  </ion-content>
+</ion-view>

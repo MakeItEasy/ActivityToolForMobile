@@ -138,6 +138,14 @@ angular.module('starter.controllers', [])
     });
   };
 })
+.controller('ActivityNoticeCtrl', function($scope, $stateParams, activity, peoples) {
+  $scope.activity = activity;
+  $scope.peoples = peoples;
+  // 1:邀请通知 2:参加人员通知 3:结算通知
+  $scope.noticeType = $stateParams.type;
+  $scope.currentDate = Date.now()
+  $scope.joinedUserNames = peoples.map(function(x) {return x.name;}).join(', ');
+})
 
 // ====================================
 // 人员管理

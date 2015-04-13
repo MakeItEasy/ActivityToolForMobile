@@ -114,6 +114,25 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       }
     }
   })
+  .state('tab.activity-notice', {
+    cache: false,
+    url: '/activity/:id/notice/:type',
+    views: {
+      'tab-activities': {
+        templateUrl: 'templates/activity/notice.html',
+        controller: 'ActivityNoticeCtrl',
+        resolve: {
+          // 异步读取db数据，直到读取成功后才注入到controller中
+          activity: function($stateParams, Activity) {
+            return Activity.activityPromise($stateParams.id);
+          },
+          peoples: function($stateParams, Activity) {
+            return Activity.peoplesPromise($stateParams.id);
+          }        
+        }
+      }
+    }
+  })
 
   .state('tab.persons', {
       cache: false,
