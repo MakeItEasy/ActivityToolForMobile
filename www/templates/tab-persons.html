@@ -6,7 +6,7 @@
     <ion-list>
       <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="person in persons" type="item-text-wrap" href="#/tab/person/{{person.id}}}">
         <h2>{{person.name}}</h2>
-        <p>{{person.account  | currency: '¥' }}</p>
+        <p class="{{ person.account < 0 ? 'accountMinus' : ''}}">{{person.account  | currency: '¥' }}</p>
         <i class="icon ion-chevron-right icon-accessory"></i>
 
         <ion-option-button class="button-balanced" ng-click="charge(person)">账户充值</ion-option-button>
