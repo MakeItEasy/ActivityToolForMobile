@@ -143,7 +143,7 @@ angular.module('starter.controllers', [])
   $scope.peoples = peoples;
   // 1:邀请通知 2:参加人员通知 3:结算通知
   $scope.noticeType = $stateParams.type;
-  $scope.currentDate = Date.now()
+  $scope.currentDate = Date.now();
   $scope.joinedUserNames = peoples.map(function(x) {return x.name;}).join(', ');
 })
 
@@ -233,8 +233,15 @@ angular.module('starter.controllers', [])
   };
 })
 
+// ====================================
+// 设置管理
+// ------------------------------------
 .controller('SettingCtrl', function($scope) {
-  $scope.settings = {
-    enableFriends: true
-  };
+})
+.controller('SettingNoticeAccountCtrl', function($scope, $filter, users) {
+  $scope.joinedUserAccountInfos = users.map(function(x) {return x.name + ":     " + $filter('currency')(x.account, "¥", 2);}).join('\r\n');
+  $scope.currentDate = Date.now();
 });
+
+
+

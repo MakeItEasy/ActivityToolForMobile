@@ -1,12 +1,15 @@
 <ion-view view-title="设置">
   <ion-content>
     <ion-list>
-    <ion-toggle  ng-model="settings.enableFriends">
-        Enable Friends
-    </ion-toggle>
+    	<div class="item item-divider">
+        	通知
+      	</div>
+		<a ng-hide="paymented" href="#/tab/setting/notice/account" class="item item-icon-left item-icon-right">
+			<i class="icon ion-social-usd"></i>
+			账户余额通知
+			<i class="icon ion-chevron-right icon-accessory"></i>
+		</a>
     </ion-list>
-
-    <button onclick="captureAudio();">Capture Audio</button>
 
   </ion-content>
 </ion-view>

@@ -177,6 +177,21 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
         controller: 'SettingCtrl'
       }
     }
+  })
+  .state('tab.setting-notice-account', {
+    url: '/setting/notice/account',
+    views: {
+      'tab-setting': {
+        templateUrl: 'templates/setting/notice_account.html',
+        controller: 'SettingNoticeAccountCtrl',
+        resolve: {
+          // 异步读取db数据，直到读取成功后才注入到controller中
+          users: function(Person) {
+            return Person.all();
+          }
+        }
+      }
+    }
   });
 
   // if none of the above states are matched, use this as the fallback
