@@ -6,7 +6,7 @@
       </div>
       <div class="item">
         参加人数
-        <span style="float:right;">{{peoples.length}}人</span>
+        <span style="float:right;">{{users.length}}人</span>
       </div>
 
       <label class="item item-input">
@@ -15,7 +15,7 @@
       </label>
       <div class="item">
         每人花费
-        <span style="float:right;">{{totalAmount/peoples.length | currency: '¥'}}</span>
+        <span style="float:right;">{{totalAmount/users.length | currency: '¥'}}</span>
       </div>
     </div>
 
@@ -26,10 +26,10 @@
       <div class="item item-divider">
         费用明细
       </div>
-	  <ion-item ng-repeat="people in peoples">
-	  	{{people.name}}
+	  <ion-item ng-repeat="user in users">
+	  	{{user.name}}
 	  	<span style="float:right;">
-	  		{{totalAmount/peoples.length | currency: '¥'}}
+	  		{{totalAmount/users.length | currency: '¥'}}
 	  	</span>
 	  </ion-item>
 	</ion-list>

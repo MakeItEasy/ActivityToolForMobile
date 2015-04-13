@@ -32,17 +32,17 @@
       </div>
 
       <div class="item item-divider">
-        人员({{peoples.length}}人)
+        人员({{users.length}}人)
       </div>
       <div ng-hide="paymented">
-        <a class="item item-icon-left item-icon-right" href="#/tab/activity/{{activity.id}}/peoples">
+        <a class="item item-icon-left item-icon-right" href="#/tab/activity/{{activity.id}}/users">
           <i class="icon ion-person-stalker"></i>
           选择参加人员
-          <span class="badge badge-balanced">{{peoples.length}}人</span>
+          <span class="badge badge-balanced">{{users.length}}人</span>
           <i class="icon ion-chevron-right icon-accessory"></i>
         </a>
       </div>
-      <div class="item padding" ng-show="peoples.length>0">
+      <div class="item padding" ng-show="users.length>0">
         {{ joinedUserNames }}
       </div>
 

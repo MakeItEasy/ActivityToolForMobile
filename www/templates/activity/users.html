@@ -1,0 +1,16 @@
+<ion-view view-title="选择人员({{ (users | filter:{joined:true}).length }})">
+  <ion-nav-buttons side="right">
+    <button class="button button-clear" ng-click="ensureUsers()">确定</button>
+  </ion-nav-buttons>
+
+  <ion-content>
+    <ion-list>
+	  <ion-item ng-repeat="user in users" class="item-checkbox">
+		<label class="checkbox checkbox-balanced">
+	    	<input type="checkbox" ng-model="user.joined" ng-true-value="'true'" ng-false-value="'false'">
+	    </label>
+	  	{{user.name}}
+	  </ion-item>
+	</ion-list>
+  </ion-content>
+</ion-view>
