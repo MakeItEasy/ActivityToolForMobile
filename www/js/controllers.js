@@ -32,11 +32,11 @@ angular.module('starter.controllers', [])
   	});
   }
 })
-.controller('ActivityDetailCtrl', function($scope, $stateParams, $location, $ionicPopup, Activity, activity, peoples) {
+.controller('ActivityDetailCtrl', function($scope, $stateParams, $location, $ionicPopup, Activity, activity, users) {
   $scope.activity = activity;
   $scope.paymented = ($scope.activity.paymentFlag == 1);
-  $scope.peoples = peoples;
-  $scope.joinedUserNames = peoples.map(function(x) {return x.name;}).join(', ');
+  $scope.users = users;
+  $scope.joinedUserNames = users.map(function(x) {return x.name;}).join(', ');
 
   $scope.showDeleteConfirm = function(activity) {
     var confirmPopup = $ionicPopup.confirm({
@@ -56,13 +56,13 @@ angular.module('starter.controllers', [])
   };
 
 })
-.controller('ActivityDetailSelectPeopleCtrl', function($scope, $stateParams, $q, $location, filterFilter, orderByFilter, DBHelper, Activity, allUsers) {
+.controller('ActivityDetailSelectUserCtrl', function($scope, $stateParams, $q, $location, filterFilter, orderByFilter, DBHelper, Activity, allUsers) {
   // 参加的人员在最上面
-  $scope.peoples = orderByFilter(allUsers, '-joined');
+  $scope.users = orderByFilter(allUsers, '-joined');
   $scope.activityId = $stateParams.id;
 
-  $scope.ensurePeoples = function() {
-  	var joinedUsers = filterFilter($scope.peoples, {joined: true});
+  $scope.ensureUsers = function() {
+  	var joinedUsers = filterFilter($scope.users, {joined: true});
   	var deferred = $q.defer();
   	DBHelper.dbInstance().transaction(function(fx) {
   		fx.executeSql("delete from activity_users where activityId=?", [$scope.activityId], function(fx, res) {
@@ -100,9 +100,9 @@ angular.module('starter.controllers', [])
   	});
   }
 })
-.controller('ActivityPaymentCtrl', function($scope, $stateParams, $location, $q, $ionicPopup, DBHelper, Activity, peoples) {
+.controller('ActivityPaymentCtrl', function($scope, $stateParams, $location, $q, $ionicPopup, DBHelper, Activity, users) {
   $scope.activity = Activity.get($stateParams.id);
-  $scope.peoples = peoples;
+  $scope.users = users;
   $scope.totalAmount = null;
 
   $scope.showPaymentConfirm = function(totalAmount) {
@@ -116,8 +116,8 @@ angular.module('starter.controllers', [])
         // 进行结算逻辑
         var deferred = $q.defer();
         DBHelper.dbInstance().transaction(function(fx) {
-          fx.executeSql("update activities set paymentFlag=1, fee=?, userCount=? where id=?", [totalAmount, $scope.peoples.length, $scope.activity.id], function(fx, res) {
-            fx.executeSql("update users set account=account-? where id in (select userId from activity_users where activityId=?)", [totalAmount/$scope.peoples.length, $scope.activity.id], function(fx, res) {
+          fx.executeSql("update activities set paymentFlag=1, fee=?, userCount=? where id=?", [totalAmount, $scope.users.length, $scope.activity.id], function(fx, res) {
+            fx.executeSql("update users set account=account-? where id in (select userId from activity_users where activityId=?)", [totalAmount/$scope.users.length, $scope.activity.id], function(fx, res) {
               deferred.resolve("true");
             }, function(e) {
               console.log("Error: " + JSON.stringify(e));
@@ -138,65 +138,62 @@ angular.module('starter.controllers', [])
     });
   };
 })
-.controller('ActivityNoticeCtrl', function($scope, $stateParams, activity, peoples) {
+.controller('ActivityNoticeCtrl', function($scope, $stateParams, activity, users) {
   $scope.activity = activity;
-  $scope.peoples = peoples;
+  $scope.users = users;
   // 1:邀请通知 2:参加人员通知 3:结算通知
   $scope.noticeType = $stateParams.type;
   $scope.currentDate = Date.now();
-  $scope.joinedUserNames = peoples.map(function(x) {return x.name;}).join(', ');
+  $scope.joinedUserNames = users.map(function(x) {return x.name;}).join(', ');
 })
 
 // ====================================
 // 人员管理
 // ------------------------------------
-.controller('PersonsCtrl', function($scope, $ionicPopup, $ionicListDelegate, Person, persons) {
-  $scope.persons = persons;
+.controller('UsersCtrl', function($scope, $ionicPopup, $ionicListDelegate, User, users) {
+  $scope.users = users;
 
-  $scope.remove = function(person) {
-    Person.remove(person);
-  }
-  $scope.charge = function(person) {
+  $scope.charge = function(user) {
   	$scope.data = {};
     // An elaborate, custom popup
-	var myPopup = $ionicPopup.show({
-		template: '<input type="number" ng-model="data.account">',
-		title: '请输入充值金额',
-		scope: $scope,
-		buttons: [
-		  { text: '取消' },
-		  {
-		    text: '<b>充值</b>',
-		    type: 'button-positive',
-		    onTap: function(e) {
-		      return $scope.data.account;
-		    }
-		  }
-		]
-	});
-	
-	myPopup.then(function(res) {
-	  if(res) {
-	  	Person.charge(person, parseFloat(res), function() {
-	  		$ionicListDelegate.closeOptionButtons();
-	  	}, function() {
-	  		// 失败
-	  		alert('充值失败!');
-	  	});
-	  }
-	});
+  	var myPopup = $ionicPopup.show({
+  		template: '<input type="number" ng-model="data.account">',
+  		title: '请输入充值金额',
+  		scope: $scope,
+  		buttons: [
+  		  { text: '取消' },
+  		  {
+  		    text: '<b>充值</b>',
+  		    type: 'button-positive',
+  		    onTap: function(e) {
+  		      return $scope.data.account;
+  		    }
+  		  }
+  		]
+  	});
+  	
+  	myPopup.then(function(res) {
+  	  if(res) {
+  	  	User.charge(user, parseFloat(res), function() {
+  	  		$ionicListDelegate.closeOptionButtons();
+  	  	}, function() {
+  	  		// 失败
+  	  		alert('充值失败!');
+  	  	});
+  	  }
+  	});
   }
 
 })
 
-.controller('PersonAddCtrl', function($scope, $location, $window, Person) {
-  $scope.person = Person.new();
-  $scope.save = function(person) {
-  	Person.add(person, function() {
+.controller('UserAddCtrl', function($scope, $location, $window, User) {
+  $scope.user = User.new();
+  $scope.save = function(user) {
+  	User.add(user, function() {
   		// 添加成功
   		// 这个地方如果使用下面的$location就不会跳转，但是如果把$location代码放到外面就可以跳转（这种情况就不是需要的了）
-  		$window.location.href = "#/tab/persons";
-  		// $location.path('/tab/persons');
+  		$window.location.href = "#/tab/users";
+  		// $location.path('/tab/users');
   	}, function() {
   		// 失败
   		alert('添加人员失败！');
@@ -204,26 +201,26 @@ angular.module('starter.controllers', [])
   }
 })
 
-.controller('PersonDetailCtrl', function($scope, $stateParams, $location, $window, $ionicPopup, Person) {
-  $scope.person = Person.get($stateParams.id);
-  $scope.update = function(person) {
-	Person.update(person, function() {
-  		$window.location.href = "#/tab/persons";
+.controller('UserDetailCtrl', function($scope, $stateParams, $location, $window, $ionicPopup, User) {
+  $scope.user = User.get($stateParams.id);
+  $scope.update = function(user) {
+	User.update(user, function() {
+  		$window.location.href = "#/tab/users";
   	}, function() {
   		// 失败
   		alert('更新人员失败！');
   	});
   }
 
-  $scope.showDeleteConfirm = function(person) {
+  $scope.showDeleteConfirm = function(user) {
   	var confirmPopup = $ionicPopup.confirm({
   		title: '删除确认',
   		template: '您确定要删除该人员信息吗?'
   	});
 	  confirmPopup.then(function(res) {
 		  if(res) {
-  			Person.remove(person, function() {
-  				$location.path('/tab/persons');
+  			User.remove(user, function() {
+  				$location.path('/tab/users');
   			}, function() {
 		  		// 失败
 		  		alert('删除人员失败！');

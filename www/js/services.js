@@ -3,10 +3,10 @@ angular.module('starter.services', ['services.db'])
 // ====================================
 // 人员管理
 // ------------------------------------
-.factory('Person', function(DBHelper, $q) {
+.factory('User', function(DBHelper, $q) {
   // Some fake testing data
 
-  var persons = [];
+  var users = [];
 
   return {
     new: function() {
@@ -16,24 +16,24 @@ angular.module('starter.services', ['services.db'])
     all: function() {
       var deferred = $q.defer();
       DBHelper.dbInstance().executeSql("SELECT * FROM USERS ORDER BY id ASC;", [], function(res) {
-        persons = DBHelper.convertResToArray(res);
-        deferred.resolve(persons);
+        users = DBHelper.convertResToArray(res);
+        deferred.resolve(users);
       });
       return deferred.promise;
     },
-    remove: function(person, successCallback, errorCallback) {
+    remove: function(user, successCallback, errorCallback) {
       // TODO dairg 删除人员时应该同时删除该人员相关的其它信息，比如充值记录，活动参加纪录等。
-      DBHelper.dbInstance().executeSql("DELETE FROM users WHERE id = ?;", [person.id], function(res) {
+      DBHelper.dbInstance().executeSql("DELETE FROM users WHERE id = ?;", [user.id], function(res) {
         successCallback();
       }, function(e) {
         console.log("ERROR: " + e.message);
         errorCallback();
       });
     },
-    get: function(personId) {
-      for (var i = 0; i < persons.length; i++) {
-        if (persons[i].id === parseInt(personId)) {
-          return persons[i];
+    get: function(userId) {
+      for (var i = 0; i < users.length; i++) {
+        if (users[i].id === parseInt(userId)) {
+          return users[i];
         }
       }
       return null;
@@ -59,15 +59,15 @@ angular.module('starter.services', ['services.db'])
       });
     },
     // 充值
-    charge: function(person, amount, successCallback, errorCallback) {
+    charge: function(user, amount, successCallback, errorCallback) {
       DBHelper.dbInstance().transaction(function(fx) {
         // 添加充值记录
         fx.executeSql("INSERT INTO charge (chargeDate, userId, amount) VALUES (?,?,?)",
-          [Date.now(), person.id, amount], function(res) {
+          [Date.now(), user.id, amount], function(res) {
             // 更新用户余额
             fx.executeSql("UPDATE users SET account=? WHERE id=?",
-              [person.account+amount, person.id], function(res) {
-              person.account += amount;
+              [user.account+amount, user.id], function(res) {
+              user.account += amount;
               successCallback();
             }, function(e) {
               console.log("ERROR: " + e.message);
@@ -156,7 +156,7 @@ angular.module('starter.services', ['services.db'])
       });
       return deferred.promise;
     },
-    peoplesPromise: function(id) {
+    usersPromise: function(id) {
       var deferred = $q.defer();
       DBHelper.dbInstance().executeSql("select users.id as id, users.name as name from activity_users left join users on users.id = activity_users.userId where activity_users.activityId = ?;", [id], function(res) {
         deferred.resolve(DBHelper.convertResToArray(res));

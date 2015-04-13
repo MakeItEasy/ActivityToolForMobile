@@ -75,8 +75,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
           activity: function($stateParams, Activity) {
             return Activity.activityPromise($stateParams.id);
           },
-          peoples: function($stateParams, Activity) {
-            return Activity.peoplesPromise($stateParams.id);
+          users: function($stateParams, Activity) {
+            return Activity.usersPromise($stateParams.id);
           }        
         }
       }
@@ -91,20 +91,20 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
         controller: 'ActivityPaymentCtrl',
         resolve: {
           // 异步读取db数据，直到读取成功后才注入到controller中
-          peoples: function($stateParams, Activity) {
-            return Activity.peoplesPromise($stateParams.id);
+          users: function($stateParams, Activity) {
+            return Activity.usersPromise($stateParams.id);
           }        
         }
       }
     }
   })
-  .state('tab.activity-detail-selectPeople', {
+  .state('tab.activity-detail-selectUser', {
     cache: false,
-    url: '/activity/:id/peoples',
+    url: '/activity/:id/users',
     views: {
       'tab-activities': {
-        templateUrl: 'templates/activity/peoples.html',
-        controller: 'ActivityDetailSelectPeopleCtrl',
+        templateUrl: 'templates/activity/users.html',
+        controller: 'ActivityDetailSelectUserCtrl',
         resolve: {
           // 异步读取db数据，直到读取成功后才注入到controller中
           allUsers: function($stateParams, Activity) {
@@ -126,45 +126,45 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
           activity: function($stateParams, Activity) {
             return Activity.activityPromise($stateParams.id);
           },
-          peoples: function($stateParams, Activity) {
-            return Activity.peoplesPromise($stateParams.id);
+          users: function($stateParams, Activity) {
+            return Activity.usersPromise($stateParams.id);
           }        
         }
       }
     }
   })
 
-  .state('tab.persons', {
+  .state('tab.users', {
       cache: false,
-      url: '/persons',
+      url: '/users',
       views: {
-        'tab-persons': {
-          templateUrl: 'templates/tab-persons.html',
-          controller: 'PersonsCtrl',
+        'tab-users': {
+          templateUrl: 'templates/tab-users.html',
+          controller: 'UsersCtrl',
           resolve: {
             // 异步读取db数据，直到读取成功后才注入到controller中
-            persons: function(Person) {
-              return Person.all();
+            users: function(User) {
+              return User.all();
             }
           }
         }
       }
     })
-  .state('tab.person-new', {
-    url: '/person/new',
+  .state('tab.user-new', {
+    url: '/user/new',
     views: {
-      'tab-persons': {
-        templateUrl: 'templates/person/new.html',
-        controller: 'PersonAddCtrl'
+      'tab-users': {
+        templateUrl: 'templates/user/new.html',
+        controller: 'UserAddCtrl'
       }
     }
   })
-  .state('tab.person-detail', {
-    url: '/person/:id',
+  .state('tab.user-detail', {
+    url: '/user/:id',
     views: {
-      'tab-persons': {
-        templateUrl: 'templates/person/show.html',
-        controller: 'PersonDetailCtrl'
+      'tab-users': {
+        templateUrl: 'templates/user/show.html',
+        controller: 'UserDetailCtrl'
       }
     }
   })
@@ -186,8 +186,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
         controller: 'SettingNoticeAccountCtrl',
         resolve: {
           // 异步读取db数据，直到读取成功后才注入到controller中
-          users: function(Person) {
-            return Person.all();
+          users: function(User) {
+            return User.all();
           }
         }
       }
