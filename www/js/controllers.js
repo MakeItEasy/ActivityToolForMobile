@@ -240,30 +240,52 @@ angular.module('starter.controllers', ['datePicker'])
 
 })
 
-.controller('UserAddCtrl', function($scope, $location, $window, User) {
+.controller('UserAddCtrl', function($scope, $location, $window, $ionicPopup, User) {
   $scope.user = User.new();
   $scope.save = function(user) {
-  	User.add(user, function() {
-  		// 添加成功
-  		// 这个地方如果使用下面的$location就不会跳转，但是如果把$location代码放到外面就可以跳转（这种情况就不是需要的了）
-  		$window.location.href = "#/tab/users";
-  		// $location.path('/tab/users');
-  	}, function() {
-  		// 失败
-  		alert('添加人员失败！');
-  	});
+    var msg = User.validate(user);
+    if(msg != "") {
+      var alertPopup = $ionicPopup.alert({
+        title: '验证错误',
+        template: msg
+      });
+      alertPopup.then(function(res) {
+        // nothing to do
+      });
+    } else {
+      User.add(user, function() {
+        // 添加成功
+        // 这个地方如果使用下面的$location就不会跳转，但是如果把$location代码放到外面就可以跳转（这种情况就不是需要的了）
+        $window.location.href = "#/tab/users";
+        // $location.path('/tab/users');
+      }, function() {
+        // 失败
+        alert('添加人员失败！');
+      });
+    }
   }
 })
 
 .controller('UserDetailCtrl', function($scope, $stateParams, $location, $window, $ionicPopup, User) {
   $scope.user = User.get($stateParams.id);
   $scope.update = function(user) {
-	User.update(user, function() {
-  		$window.location.href = "#/tab/users";
-  	}, function() {
-  		// 失败
-  		alert('更新人员失败！');
-  	});
+    var msg = User.validate(user);
+    if(msg != "") {
+      var alertPopup = $ionicPopup.alert({
+        title: '验证错误',
+        template: msg
+      });
+      alertPopup.then(function(res) {
+        // nothing to do
+      });
+    } else {
+  	  User.update(user, function() {
+    		$window.location.href = "#/tab/users";
+    	}, function() {
+    		// 失败
+    		alert('更新人员失败！');
+    	});
+    }
   }
 
   $scope.showDeleteConfirm = function(user) {

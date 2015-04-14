@@ -78,6 +78,14 @@ angular.module('starter.services', ['services.db'])
           errorCallback();
         });
       });
+    },
+    // 验证
+    validate: function(user) {
+      var message = "";
+      if(user.name.trim() == "") {
+        message = "姓名不能为空!"
+      }
+      return message;
     }
   };
 })
