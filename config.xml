@@ -5,7 +5,7 @@
         帮助管理活动结算和账户充值.
   </description>
   <author email="rugang6891@163.com" href="http://makeiteasy.github.io/">
-      Ionic Framework Team
+      MakeItEasy
   </author>
   <icon src="res/icon.png" />
   <content src="index.html"/>
