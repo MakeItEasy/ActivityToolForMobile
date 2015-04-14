@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="com.ionicframework.myapp479269" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-  <name>myApp</name>
+<widget id="com.makeiteasy.activityTool" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+  <name>活动帮手</name>
   <description>
-        An Ionic Framework and Cordova project.
+        帮助管理活动结算和账户充值.
     </description>
-  <author email="hi@ionicframework" href="http://ionicframework.com/">
+  <author email="rugang6891@163.com" href="http://makeiteasy.github.io/">
       Ionic Framework Team
     </author>
   <content src="index.html"/>
@@ -20,5 +20,4 @@
     <param name="ios-package" value="CDVCapture" />
   </feature>
 
-  
 </widget>

@@ -1,7 +1,7 @@
 {
-  "name": "myapp",
+  "name": "activityTool",
   "version": "1.0.0",
-  "description": "myApp: An Ionic project",
+  "description": "activityTool: An Ionic project to manage activity and manage the user account.",
   "dependencies": {
     "gulp": "^3.5.6",
     "gulp-sass": "^0.7.1",
