@@ -1,27 +1,81 @@
-angular.module('starter.controllers', [])
+angular.module('starter.controllers', ['datePicker'])
 
 .controller('ActivitiesCtrl', function($scope, activities) {
   $scope.activities = activities;
 })
-.controller('ActivityAddCtrl', function($scope, $location, $window, Activity) {
+.controller('ActivityAddCtrl', function($scope, $location, $window, $q, Activity) {
   $scope.activity = Activity.new();
+  $scope.isIOS = ionic.Platform.isIOS();
+  $scope.isAndroid = ionic.Platform.isAndroid();
 
-  /* 暂时不使用datePicker插件
-  var options = {
-    date: new Date(),
-    mode: 'datetime'
+  // 针对ios平台，设置活动时间
+  $scope.showDatePickerForIOS = function() {
+    function asyncShowDatePicker() {
+      var deferred = $q.defer();
+      var options = {
+        date: $scope.activity.date,
+        // minDate: new Date(),
+        mode: 'datetime'
+      };
+    
+      datePicker.show(options, function(date){
+        $scope.activity.date = date;
+        deferred.resolve();
+      });
+      return deferred.promise;
+    }
+    asyncShowDatePicker().then(function() {
+      // nothing to do
+    });
   };
-
-  $scope.showDatePicker = function() {
-	// alert("test");
-	// $scope.activity.date = new Date();
-	
-	datePicker.show(options, function(date){
-    	$scope.activity.date = date;
-  	});
-	
+  // 针对Android平台，设置活动日期
+  $scope.showDatePickerForAndroid = function() {
+    function asyncShowDatePicker() {
+      var deferred = $q.defer();
+      var options = {
+        mode: 'date',
+        // minDate: new Date(),
+        date: $scope.activity.date
+      };
+    
+      datePicker.show(options, function(date){
+        if(date != "Invalid Date") {
+          $scope.activity.date.setFullYear(date.getFullYear());
+          $scope.activity.date.setMonth(date.getMonth());
+          $scope.activity.date.setDate(date.getDate());
+        }
+        deferred.resolve();
+      });
+      return deferred.promise;
+    }
+    asyncShowDatePicker().then(function() {
+      // nothing to do
+    });
   };
-  */
+  
+  // 针对Android平台，设置活动时间
+  $scope.showTimePickerForAndroid = function() {
+    function asyncShowDatePicker() {
+      var deferred = $q.defer();
+      var options = {
+        date: $scope.activity.date,
+        mode: 'time'
+      };
+    
+      datePicker.show(options, function(date){
+        if(date != "Invalid Date") {
+          $scope.activity.date.setHours(date.getHours());
+          $scope.activity.date.setMinutes(date.getMinutes());
+          $scope.activity.date.setSeconds(date.getSeconds());
+        }
+        deferred.resolve();
+      });
+      return deferred.promise;
+    }
+    asyncShowDatePicker().then(function() {
+      // nothing to do
+    });
+  };
 
   $scope.save = function(activity) {
   	Activity.add(activity, function() {
