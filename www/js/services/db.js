@@ -10,24 +10,29 @@ angular.module('services.db', [])
   function onDeviceReady() {
     db = window.sqlitePlugin.openDatabase({name: "ActivityApp.sqlite"});
     db.transaction(function(tx) {
-      // tx.executeSql('DROP TABLE IF EXISTS users');
+      // 删除表
+      /*
+      tx.executeSql('DROP TABLE IF EXISTS users');
+      tx.executeSql('DROP TABLE IF EXISTS charge');
+      tx.executeSql('DROP TABLE IF EXISTS activities');
+      tx.executeSql('DROP TABLE IF EXISTS activity_users');
+      */
+
       // 创建用户表
       tx.executeSql('CREATE TABLE IF NOT EXISTS users (' +
           'id integer primary key AUTOINCREMENT unique,' + 
           'name text unique,' + 
-          'telephone text unique,' +
-          'email text unique,' +
+          'telephone text,' +
+          'email text,' +
           'account numeric default 0)');
 
-      // tx.executeSql('DROP TABLE IF EXISTS charge');
-      // 创建用户表
+      // 创建充值记录表
       tx.executeSql('CREATE TABLE IF NOT EXISTS charge (' +
           'chargeDate integer,' + 
           'userId integer,' + 
           'amount numeric)');
 
-      // tx.executeSql('DROP TABLE IF EXISTS activities');
-      // 创建用户表
+      // 创建活动表
       tx.executeSql('CREATE TABLE IF NOT EXISTS activities (' +
           'id integer primary key AUTOINCREMENT unique,' + 
           'catagory text,' + 
@@ -36,7 +41,6 @@ angular.module('services.db', [])
           'userCount integer default 0,' +
           "paymentFlag integer default 0)");          // 是否结算 0:未结算 1:已结算
 
-      // tx.executeSql('DROP TABLE IF EXISTS activity_users');
       // 创建用户参加活动表
       tx.executeSql('CREATE TABLE IF NOT EXISTS activity_users (' +
           'activityId integer,' + 
