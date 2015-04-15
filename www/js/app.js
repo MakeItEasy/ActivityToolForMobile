@@ -21,7 +21,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
+
+
+  $ionicConfigProvider.tabs.position("bottom"); //Places them at the bottom for all OS
+  $ionicConfigProvider.tabs.style("standard"); //Makes them all look the same across all OS
+  $ionicConfigProvider.navBar.alignTitle("center");
+  $ionicConfigProvider.backButton.previousTitleText(true);
 
   // Ionic uses AngularUI Router which uses the concept of states
   // Learn more here: https://github.com/angular-ui/ui-router
