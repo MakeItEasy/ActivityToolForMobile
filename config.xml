@@ -17,6 +17,9 @@
   <feature name="StatusBar">
     <param name="ios-package" value="CDVStatusBar" onload="true"/>
   </feature>
+  <feature name="Camera">
+    <param name="ios-package" value="CDVCamera" />
+  </feature>
 
   <platform name="android">
     <!-- you can use any density that exists in the Android project -->

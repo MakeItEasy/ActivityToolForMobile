@@ -266,7 +266,7 @@ angular.module('starter.controllers', ['datePicker'])
   }
 })
 
-.controller('UserDetailCtrl', function($scope, $stateParams, $location, $window, $ionicPopup, User) {
+.controller('UserDetailCtrl', function($scope, $stateParams, $location, $window, $ionicPopup, User, MyCamera) {
   $scope.user = User.get($stateParams.id);
   $scope.update = function(user) {
     var msg = User.validate(user);
@@ -303,6 +303,28 @@ angular.module('starter.controllers', ['datePicker'])
 		  	});
     	}
 	  });
+  };
+
+  $scope.getPhoto = function(user) {
+    alert(Camera);
+    alert(Camera.DestinationType.DATA_URL);
+    var opts = {  quality : 100,
+                  destinationType : Camera.DestinationType.FILE_URL,
+                  sourceType : Camera.PictureSourceType.CAMERA,
+                  allowEdit : true,
+                  encodingType: Camera.EncodingType.JPEG,
+                  targetWidth: 300,
+                  targetHeight: 300,
+                  // popoverOptions: CameraPopoverOptions,
+                  saveToPhotoAlbum: false 
+                };
+
+    MyCamera.getPicture(opts).then(function(imageURI) {
+      alert(imageURI);
+      user.imgsrc = imageURI;
+    }, function(err) {
+      alert(err);
+    });
   };
 })
 
