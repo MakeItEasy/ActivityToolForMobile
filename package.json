@@ -15,7 +15,6 @@
     "shelljs": "^0.3.0"
   },
   "cordovaPlugins": [
-    "org.apache.cordova.media-capture",
     "com.plugin.datepicker"
   ]
 }
