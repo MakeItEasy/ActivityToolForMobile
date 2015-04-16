@@ -16,6 +16,7 @@
   },
   "cordovaPlugins": [
     "com.plugin.datepicker",
-    "org.apache.cordova.camera"
+    "org.apache.cordova.camera",
+    "org.apache.cordova.console"
   ]
 }
