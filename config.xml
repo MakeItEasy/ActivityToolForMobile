@@ -20,6 +20,10 @@
   <feature name="Camera">
     <param name="ios-package" value="CDVCamera" />
   </feature>
+  <feature name="File">
+    <param name="android-package" value="org.apache.cordova.file.FileUtils" />
+    <param name="ios-package" value="CDVFile" />
+  </feature>
 
   <platform name="android">
     <!-- you can use any density that exists in the Android project -->

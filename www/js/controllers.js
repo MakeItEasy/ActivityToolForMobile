@@ -1,4 +1,4 @@
-angular.module('starter.controllers', ['datePicker'])
+angular.module('starter.controllers', ['datePicker', 'services.fileUtil'])
 
 .controller('ActivitiesCtrl', function($scope, activities) {
   $scope.activities = activities;
@@ -266,7 +266,7 @@ angular.module('starter.controllers', ['datePicker'])
   }
 })
 
-.controller('UserDetailCtrl', function($scope, $stateParams, $location, $window, $ionicPopup, User, MyCamera) {
+.controller('UserDetailCtrl', function($scope, $stateParams, $location, $window, $ionicPopup, User, MyCamera, FileUtil) {
   $scope.user = User.get($stateParams.id);
   $scope.update = function(user) {
     var msg = User.validate(user);
@@ -306,8 +306,7 @@ angular.module('starter.controllers', ['datePicker'])
   };
 
   $scope.getPhoto = function(user) {
-    alert(Camera);
-    alert(Camera.DestinationType.DATA_URL);
+
     var opts = {  quality : 100,
                   destinationType : Camera.DestinationType.FILE_URL,
                   sourceType : Camera.PictureSourceType.CAMERA,
@@ -322,9 +321,41 @@ angular.module('starter.controllers', ['datePicker'])
     MyCamera.getPicture(opts).then(function(imageURI) {
       alert(imageURI);
       user.imgsrc = imageURI;
+      var filesys;
+      var fileSrc;
+
+      function gotFS(fileSystem) {
+          var strUrl = imageURI.replace(/file:\/\//, '');
+          fileSystem.root.getFile(strUrl, null, gotFileEntry, fail);
+          filesys = fileSystem;
+          alert("strUrl: " + strUrl);
+      };
+
+      function gotFileEntry(fileEntry) {
+          alert("url:" + fileEntry.toURL());
+          fileSrc = fileEntry;
+          filesys.root.getDirectory("data", {create: true, exclusive: false}, successDir, fail);
+      };
+
+      function successDir(parent) {
+        alert("parent: " + parent.toURL());
+        fileSrc.moveTo(parent, user.id+".jpeg", success, fail);
+      };
+
+      function success(entry) {
+        alert("New Path: " + entry.fullPath);
+      };
+
+      function fail(error) {
+          alert("error:"+JSON.stringify(error));
+      };
+
+
+      window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail);
     }, function(err) {
       alert(err);
     });
+
   };
 })
 
