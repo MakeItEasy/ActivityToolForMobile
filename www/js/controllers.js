@@ -206,6 +206,7 @@ angular.module('starter.controllers', ['datePicker', 'services.fileUtil'])
 // ------------------------------------
 .controller('UsersCtrl', function($scope, $ionicPopup, $ionicListDelegate, User, users) {
   $scope.users = users;
+  users.forEach(function(u) { u.avatar += "?" + Date.now();});
 
   $scope.charge = function(user) {
   	$scope.data = {};
@@ -268,6 +269,7 @@ angular.module('starter.controllers', ['datePicker', 'services.fileUtil'])
 
 .controller('UserDetailCtrl', function($scope, $stateParams, $location, $window, $ionicPopup, User, MyCamera, FileUtil) {
   $scope.user = User.get($stateParams.id);
+  $scope.user.avatar += "?" + Date.now();
   $scope.update = function(user) {
     var msg = User.validate(user);
     if(msg != "") {
@@ -323,7 +325,9 @@ angular.module('starter.controllers', ['datePicker', 'services.fileUtil'])
       var strUrl = imageURI.replace(/file:\/\//, '');
       FileUtil.copyFileTo(strUrl, "data/com.makeiteasy.activityTool/avatars", user.id+".png", function(fileEntry) {
         console.log("copy success: " + fileEntry.toURL());
-        document.getElementById("avatar").src = fileEntry.toURL();
+        user.avatar = fileEntry.toURL();
+        User.updateAvatar(user);
+        document.getElementById("avatar").src = fileEntry.toURL() + "?" + Date.now();
       }, function(error) {
         console.log("copy fail:" + error);
       });

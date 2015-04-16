@@ -166,6 +166,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     }
   })
   .state('tab.user-detail', {
+    cache: false,
     url: '/user/:id',
     views: {
       'tab-users': {

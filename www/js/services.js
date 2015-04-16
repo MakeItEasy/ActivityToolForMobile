@@ -10,7 +10,7 @@ angular.module('starter.services', ['services.db', 'services.fileUtil'])
 
   return {
     new: function() {
-      return {name: '', telephone: '', email: '', account: 0};
+      return {name: '', telephone: '', email: '', account: 0, avatar: "img/default_avatar.png"};
     },
     // 返回的是一个promise对象
     all: function() {
@@ -40,8 +40,8 @@ angular.module('starter.services', ['services.db', 'services.fileUtil'])
     },
     // 添加
     add: function(data, successCallback, errorCallback) {
-      DBHelper.dbInstance().executeSql("INSERT INTO users (name, telephone, email) VALUES (?,?,?)",
-        [data.name, data.telephone, data.email], function(res) {
+      DBHelper.dbInstance().executeSql("INSERT INTO users (name, telephone, email, avatar) VALUES (?,?,?,?)",
+        [data.name, data.telephone, data.email, data.avatar], function(res) {
         successCallback();
       }, function(e) {
         console.log("ERROR: " + e.message);
@@ -52,6 +52,16 @@ angular.module('starter.services', ['services.db', 'services.fileUtil'])
     update: function(data, successCallback, errorCallback) {
       DBHelper.dbInstance().executeSql("UPDATE users SET name=?, telephone=?, email=? WHERE id=?",
         [data.name, data.telephone, data.email, data.id], function(res) {
+        successCallback();
+      }, function(e) {
+        console.log("ERROR: " + e.message);
+        errorCallback();
+      });
+    },
+    // 更新
+    updateAvatar: function(data, successCallback, errorCallback) {
+      DBHelper.dbInstance().executeSql("UPDATE users SET avatar=? WHERE id=?",
+        [data.avatar, data.id], function(res) {
         successCallback();
       }, function(e) {
         console.log("ERROR: " + e.message);

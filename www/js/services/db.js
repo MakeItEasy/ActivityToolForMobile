@@ -24,6 +24,7 @@ angular.module('services.db', [])
           'name text unique,' + 
           'telephone text,' +
           'email text,' +
+          'avatar text,' +
           'account numeric default 0)');
 
       // 创建充值记录表
