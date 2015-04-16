@@ -307,11 +307,12 @@ angular.module('starter.controllers', ['datePicker', 'services.fileUtil'])
 
   $scope.getPhoto = function(user) {
 
+
     var opts = {  quality : 100,
                   destinationType : Camera.DestinationType.FILE_URL,
                   sourceType : Camera.PictureSourceType.CAMERA,
                   allowEdit : true,
-                  encodingType: Camera.EncodingType.JPEG,
+                  encodingType: Camera.EncodingType.PNG,
                   targetWidth: 300,
                   targetHeight: 300,
                   // popoverOptions: CameraPopoverOptions,
@@ -319,41 +320,16 @@ angular.module('starter.controllers', ['datePicker', 'services.fileUtil'])
                 };
 
     MyCamera.getPicture(opts).then(function(imageURI) {
-      alert(imageURI);
-      user.imgsrc = imageURI;
-      var filesys;
-      var fileSrc;
-
-      function gotFS(fileSystem) {
-          var strUrl = imageURI.replace(/file:\/\//, '');
-          fileSystem.root.getFile(strUrl, null, gotFileEntry, fail);
-          filesys = fileSystem;
-          alert("strUrl: " + strUrl);
-      };
-
-      function gotFileEntry(fileEntry) {
-          alert("url:" + fileEntry.toURL());
-          fileSrc = fileEntry;
-          filesys.root.getDirectory("data", {create: true, exclusive: false}, successDir, fail);
-      };
-
-      function successDir(parent) {
-        alert("parent: " + parent.toURL());
-        fileSrc.moveTo(parent, user.id+".jpeg", success, fail);
-      };
-
-      function success(entry) {
-        alert("New Path: " + entry.fullPath);
-      };
-
-      function fail(error) {
-          alert("error:"+JSON.stringify(error));
-      };
-
-
-      window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail);
+      var strUrl = imageURI.replace(/file:\/\//, '');
+      FileUtil.copyFileTo(strUrl, "data/com.makeiteasy.activityTool/avatars", user.id+".png", function(fileEntry) {
+        console.log("copy success: " + fileEntry.toURL());
+        document.getElementById("avatar").src = fileEntry.toURL();
+      }, function(error) {
+        console.log("copy fail:" + error);
+      });
     }, function(err) {
-      alert(err);
+      // 取消照相 nothing to do
+      console.log("camera error: " + err);
     });
 
   };

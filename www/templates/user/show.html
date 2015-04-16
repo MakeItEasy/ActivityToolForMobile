@@ -1,6 +1,11 @@
 <ion-view view-title="{{user.name}}">
 
   <ion-content>
+    
+    <div style="width:100%; text-align:center;">
+      <img id="avatar" class="avatar" src="file:///storage/sdcard//data/com.makeiteasy.activityTool/avatars/{{user.id}}.png" ng-click="getPhoto(user)">
+    </div>
+
     <div class="list">
       <label class="item item-input item-floating-label">
         <span class="input-label">姓名</span>
@@ -16,24 +21,9 @@
       </label>
     </div>
 
-    <button class="button button-balanced button-full button-positive" ng-click="getPhoto(user)">设置头像</button>
-
     <button class="button button-balanced button-full button-positive" ng-click="update(user)">保存</button>
     <br>
     <button class="button button-assertive button-full button-positive button-footer" ng-click="showDeleteConfirm(user)">删除</button>
-
-
-    <div class="list">
-
-      <a class="item item-avatar" href="#">
-        <!--<img src="{{user.imgsrc}}">-->
-        <img src="file:///storage/sdcard//data/{{user.id}}.jpeg">
-
-        <h2>Venkman</h2>
-        <p>Back off, man. I'm a scientist.</p>
-      </a>
-
-    </div>
 
   </ion-content>
 </ion-view>

@@ -1,9 +1,9 @@
-angular.module('starter.services', ['services.db'])
+angular.module('starter.services', ['services.db', 'services.fileUtil'])
 
 // ====================================
 // 人员管理
 // ------------------------------------
-.factory('User', function(DBHelper, $q) {
+.factory('User', function(DBHelper, FileUtil, $q) {
   // Some fake testing data
 
   var users = [];
@@ -86,6 +86,10 @@ angular.module('starter.services', ['services.db'])
         message = "姓名不能为空!"
       }
       return message;
+    },
+
+    setAvatar: function(imgUrl) {
+
     }
   };
 })
