@@ -114,6 +114,7 @@ angular.module('starter.controllers', ['datePicker', 'services.fileUtil'])
   // 参加的人员在最上面
   $scope.users = orderByFilter(allUsers, '-joined');
   $scope.activityId = $stateParams.id;
+  $scope.users.forEach(function(u) { u.avatar += "?" + Date.now();});
 
   $scope.ensureUsers = function() {
   	var joinedUsers = filterFilter($scope.users, {joined: true});

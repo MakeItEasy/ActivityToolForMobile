@@ -5,11 +5,12 @@
 
   <ion-content>
     <ion-list>
-	  <ion-item ng-repeat="user in users" class="item-checkbox">
-		<label class="checkbox checkbox-balanced">
+	  <ion-item ng-repeat="user in users" class="item-remove-animate item-avatar item-checkbox item-checkbox-right">
+	    <img ng-src="{{user.avatar}}">
+	  	<h2 style="margin-left: 60px; margin-top:10px;">{{user.name}}</h2>
+	  	<label class="checkbox checkbox-balanced">
 	    	<input type="checkbox" ng-model="user.joined" ng-true-value="'true'" ng-false-value="'false'">
 	    </label>
-	  	{{user.name}}
 	  </ion-item>
 	</ion-list>
   </ion-content>
