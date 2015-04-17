@@ -1,9 +1,13 @@
-<ion-view view-title="余额通知">  
+<ion-view view-title="余额通知">
+  <ion-nav-buttons side="right">
+    <button class="button button-clear" ng-click="copy()">拷贝</button>
+  </ion-nav-buttons>
+
   <ion-content>
     
     <div class="padding">
     	
-<textarea rows="15" class="notice">余额通知
+<textarea id="notice" rows="15" class="notice">余额通知
 
 各位小伙伴目前的余额信息如下(带括号为欠费金额):
 

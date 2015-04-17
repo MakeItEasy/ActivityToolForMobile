@@ -200,6 +200,16 @@ angular.module('starter.controllers', ['datePicker', 'services.fileUtil'])
   $scope.noticeType = $stateParams.type;
   $scope.currentDate = Date.now();
   $scope.joinedUserNames = users.map(function(x) {return x.name;}).join(', ');
+
+  $scope.copy = function(noticeType) {
+    var txtArea = document.getElementById("notice"+noticeType);
+    cordova.plugins.clipboard.copy(txtArea.value, function(text){
+      // 拷贝成功
+      // alert('success:'+text);
+    }, function(err){
+      alert('拷贝出错:'+err);
+    });
+  }
 })
 
 // ====================================
@@ -348,6 +358,16 @@ angular.module('starter.controllers', ['datePicker', 'services.fileUtil'])
 .controller('SettingNoticeAccountCtrl', function($scope, $filter, users) {
   $scope.joinedUserAccountInfos = users.map(function(x) {return x.name + ":     " + $filter('currency')(x.account, "¥", 2);}).join('\r\n');
   $scope.currentDate = Date.now();
+
+  $scope.copy = function() {
+    var txtArea = document.getElementById("notice");
+    cordova.plugins.clipboard.copy(txtArea.value, function(text){
+      // 拷贝成功
+      // alert('success:'+text);
+    }, function(err){
+      alert('拷贝出错:'+err);
+    });
+  }
 });
 
 
